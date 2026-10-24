@@ -42,8 +42,8 @@ Useful scripts:
 
 - **Next.js 16 App Router** (React 19, TypeScript strict, Cache Components / Partial Prerendering). Pages prerender
   to static shells; live stock and pickup availability stream in.
-- **Tailwind CSS v4** with design tokens in `src/app/globals.css`. Type: Gloock (display), Instrument Serif italic
-  (accent), Manrope (text). Palette: cream, paper and ink. Visual direction: the cream/editorial serif style of
+- **Tailwind CSS v4** with design tokens in `src/app/globals.css`. Type: Gloock + Instrument Serif italic for the
+  wordmark lockup only, Newsreader (optical sizes) for headings, Hanken Grotesk for text and interface. Palette: cream, paper and ink. Visual direction: the cream/editorial serif style of
   the Maison Véra Framer template, with a homepage hero modelled on the reference composition (giant wordmark behind a
   transparent bouquet).
 - **Drizzle ORM + libSQL**: a SQLite file locally, Turso (hosted libSQL) in production.
@@ -56,7 +56,7 @@ src/
   app/api/           Stripe webhook, calendar files, CSV exports, cron sweep
   app/actions/       server actions for the storefront (cart pricing, checkout, forms)
   components/        UI: ui/ (primitives), site/ (chrome), home/, shop/, cart/, subscriptions/, forms/, admin/
-  content/           editable copy (home, FAQ), the image asset manifest
+  content/           editable copy (home, wholesale, FAQ), the image asset manifest
   domain/            typed models + validation (catalog, cart, orders, settings)
   server/            database, pricing, availability, orders state machine, Stripe, email, auth, storage
   lib/               site config, formatting, time zone helpers, SEO helpers

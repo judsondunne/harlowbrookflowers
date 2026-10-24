@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { cartStore } from "@/components/cart/cart-store";
-import { IconCheck, IconPlus } from "@/components/ui/icons";
-import { cn } from "@/lib/format";
+import { buttonClass } from "@/components/ui/button";
 
 export function QuickAdd({
   productId,
@@ -32,14 +31,9 @@ export function QuickAdd({
         window.setTimeout(() => setAdded(false), 1800);
         open();
       }}
-      className={cn(
-        "inline-flex h-10 items-center gap-2 rounded-full border border-ink/80 px-4 text-[0.8125rem] font-semibold transition-colors duration-300",
-        "hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:border-ink/25 disabled:text-muted disabled:hover:bg-transparent",
-        className,
-      )}
+      className={buttonClass("secondary", "sm", className)}
       aria-label={`${label}: ${name}`}
     >
-      {added ? <IconCheck size={16} strokeWidth={2} /> : <IconPlus size={16} />}
       {added ? "Added" : label}
     </button>
   );

@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCartSnapshot } from "@/components/cart/cart-provider";
 import { OrderSummary } from "@/components/cart/order-summary";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink, buttonClass } from "@/components/ui/button";
 import { TextArea, TextField } from "@/components/ui/field";
-import { IconArrowRight, IconInfo, IconLock } from "@/components/ui/icons";
 import { checkoutAction, releaseCheckoutAction, type CheckoutFormState } from "@/app/actions/checkout";
 import { formatMoney } from "@/lib/format";
 
@@ -84,8 +83,7 @@ export function CheckoutView() {
     <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <div className="lg:col-span-7">
         {(canceled || failed) && (
-          <div role="status" className="mb-8 flex gap-3 rounded-sm bg-butter/60 p-4 text-sm">
-            <IconInfo size={20} className="mt-0.5 shrink-0 text-olive" />
+          <div role="status" className="mb-8 border-l-2 border-olive bg-butter/50 px-4 py-3 text-sm">
             <p>
               <span className="font-semibold">{failed ? "Your payment didn't go through." : "Payment cancelled."}</span> Nothing
               was charged and your cart is just as you left it.
@@ -178,7 +176,7 @@ export function CheckoutView() {
             <button
               type="submit"
               disabled={pending || loading || !!blocking || !!closed || !quote}
-              className="group inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[0.9375rem] font-semibold text-paper transition-colors hover:bg-ink-soft disabled:opacity-45"
+              className={buttonClass("primary", "lg", "h-14 w-full gap-3 disabled:opacity-45")}
             >
               {pending ? (
                 "Opening secure payment…"
@@ -186,13 +184,11 @@ export function CheckoutView() {
                 <>
                   {snapshot?.checkout.demo ? "Continue to demo payment" : "Continue to secure payment"}
                   {quote && <span className="tabular-nums opacity-80">· {formatMoney(quote.totalCents)}</span>}
-                  <IconArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                 </>
               )}
             </button>
-            <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-muted">
-              <IconLock size={14} />
-              {snapshot?.checkout.demo
+            <p className="mt-4 text-center text-xs text-muted">
+              {snapshot?.checkout.demo && snapshot.checkout.open
                 ? "Preview mode: the next step simulates payment. No card is needed and nothing is charged."
                 : "Payment is handled by Stripe. Pay by card, or with Apple Pay or Google Pay where available."}
             </p>

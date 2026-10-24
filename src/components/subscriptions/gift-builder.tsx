@@ -1,13 +1,12 @@
 "use client";
 
 import { useId, useState } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCart } from "@/components/cart/cart-provider";
 import { cartStore } from "@/components/cart/cart-store";
 import { Button } from "@/components/ui/button";
 import { TextArea, TextField } from "@/components/ui/field";
-import { IconCheck, SprigMark } from "@/components/ui/icons";
+import { GiftCardFace } from "./gift-card";
 import { formatPrice, cn } from "@/lib/format";
 import { addMonths, formatMonth } from "@/lib/time";
 
@@ -82,21 +81,18 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
   const endMonth = month ? addMonths(month, plan.deliveries - 1) : "";
 
   return (
-    <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
       <div className="space-y-12 lg:col-span-7">
         <fieldset>
-          <legend className="t-h3">
-            <span className="mr-3 text-base font-sans font-semibold text-olive">01</span>Choose a plan
-          </legend>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <legend className="t-h3">Choose a plan</legend>
+          <div className="mt-5 border-y border-line">
             {plans.map((p) => {
               const selected = p.slug === plan.slug;
               return (
                 <label
                   key={p.id}
                   className={cn(
-                    "relative flex cursor-pointer flex-col bg-paper p-5 ring-1 transition",
-                    selected ? "ring-2 ring-ink" : "ring-line hover:ring-ink/40",
+                    "relative flex cursor-pointer items-start gap-4 border-b border-line py-5 pr-1 transition-colors last:border-b-0",
                     !p.available && "cursor-not-allowed opacity-50",
                   )}
                 >
@@ -111,29 +107,27 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
                       setStartMonth(p.startMonths[0] ?? "");
                     }}
                   />
-                  <span className="pointer-events-none absolute inset-0 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink" />
-                  <span className="flex items-start justify-between gap-3">
-                    <span className="font-display text-[1.4rem] leading-tight">{p.name}</span>
-                    <span
-                      className={cn(
-                        "grid size-6 shrink-0 place-items-center rounded-full border",
-                        selected ? "border-ink bg-ink text-paper" : "border-ink/30",
-                      )}
-                    >
-                      {selected && <IconCheck size={14} strokeWidth={2} />}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "mt-1.5 grid size-[1.125rem] shrink-0 place-items-center rounded-full border transition-colors peer-focus-visible:outline-[1.5px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink",
+                      selected ? "border-ink" : "border-ink/35",
+                    )}
+                  >
+                    <span className={cn("size-2 rounded-full bg-ink transition-transform", selected ? "scale-100" : "scale-0")} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-baseline justify-between gap-4">
+                      <span className="font-display text-[1.375rem] leading-tight">{p.name}</span>
+                      <span className="text-[1.0625rem] tabular-nums">{formatPrice(p.priceCents)}</span>
+                    </span>
+                    <span className="mt-1 block text-sm text-ink-soft">{p.tagline}</span>
+                    <span className="mt-1 block text-[0.8125rem] text-muted">
+                      {p.deliveries} Garden Bouquets, {formatPrice(Math.round(p.priceCents / p.deliveries))} each
+                      {!p.available && " · Fully subscribed for this season"}
+                      {p.available && p.remaining !== null && p.remaining <= 5 && ` · ${p.remaining} left this season`}
                     </span>
                   </span>
-                  <span className="mt-2 text-sm text-ink-soft">{p.tagline}</span>
-                  <span className="mt-4 flex items-baseline gap-2">
-                    <span className="text-xl font-semibold tabular-nums">{formatPrice(p.priceCents)}</span>
-                    <span className="text-sm text-muted">
-                      {p.deliveries} bouquets · {formatPrice(Math.round(p.priceCents / p.deliveries))} each
-                    </span>
-                  </span>
-                  {!p.available && <span className="mt-2 text-xs font-semibold uppercase tracking-wider">Fully subscribed</span>}
-                  {p.available && p.remaining !== null && p.remaining <= 5 && (
-                    <span className="mt-2 text-xs font-semibold uppercase tracking-wider">Only {p.remaining} left this season</span>
-                  )}
                 </label>
               );
             })}
@@ -141,12 +135,10 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
         </fieldset>
 
         <fieldset className="space-y-5">
-          <legend className="t-h3 mb-2">
-            <span className="mr-3 text-base font-sans font-semibold text-olive">02</span>Who is it for?
-          </legend>
+          <legend className="t-h3 mb-2">Who it&apos;s for</legend>
           <TextField
             id={`${id}-recipientName`}
-            label="Recipient's name"
+            label="Their name"
             value={recipientName}
             maxLength={80}
             autoComplete="off"
@@ -156,14 +148,14 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
           <TextField
             id={`${id}-recipientEmail`}
             type="email"
-            label="Recipient's email"
+            label="Their email"
             optional={!notifyRecipient}
             value={recipientEmail}
             maxLength={254}
             autoComplete="off"
             onChange={(e) => setRecipientEmail(e.target.value)}
             error={errors.recipientEmail}
-            hint="So Sarah can share pickup dates with them directly."
+            hint="So Sarah can send the pickup dates to them directly."
           />
           <label className="flex cursor-pointer items-start gap-3 text-sm">
             <input
@@ -180,9 +172,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
         </fieldset>
 
         <fieldset className="space-y-5">
-          <legend className="t-h3 mb-2">
-            <span className="mr-3 text-base font-sans font-semibold text-olive">03</span>Your note
-          </legend>
+          <legend className="t-h3 mb-2">Your note</legend>
           <TextField
             id={`${id}-senderName`}
             label="From"
@@ -207,12 +197,14 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
         </fieldset>
 
         <fieldset>
-          <legend className="t-h3">
-            <span className="mr-3 text-base font-sans font-semibold text-olive">04</span>When should it begin?
-          </legend>
-          <div className="mt-5 flex flex-wrap gap-3" role="radiogroup" aria-describedby={errors.startMonth ? `${id}-sm-err` : undefined}>
+          <legend className="t-h3">When it begins</legend>
+          <div
+            className="mt-5 inline-flex flex-wrap border border-line-strong"
+            role="radiogroup"
+            aria-describedby={errors.startMonth ? `${id}-sm-err` : undefined}
+          >
             {plan.startMonths.map((m, i) => (
-              <label key={m} className="cursor-pointer">
+              <label key={m} className="cursor-pointer border-line-strong not-first:border-l">
                 <input
                   id={i === 0 ? `${id}-startMonth` : undefined}
                   type="radio"
@@ -221,7 +213,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
                   checked={month === m}
                   onChange={() => setStartMonth(m)}
                 />
-                <span className="inline-flex h-11 items-center rounded-full border border-ink/30 px-5 text-sm font-semibold transition peer-checked:border-ink peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink">
+                <span className="inline-flex h-11 items-center px-5 text-sm font-medium transition-colors peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-[1.5px] peer-focus-visible:-outline-offset-4 peer-focus-visible:outline-paper hover:bg-ink/[0.045] peer-checked:hover:bg-ink">
                   {formatMonth(m)}
                 </span>
               </label>
@@ -234,34 +226,36 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
           )}
           <p className="mt-4 text-sm text-muted">
             {plan.deliveries} monthly bouquets{month ? `, ${formatMonth(month)} to ${formatMonth(endMonth)}` : ""}. Bouquets
-            follow the growing season and are collected in Hartland.
+            follow the growing season and are collected at the farm in Hartland.
           </p>
         </fieldset>
       </div>
 
       <aside className="lg:col-span-5">
         <div className="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
-          <GiftCardPreview
-            planName={plan.name}
-            deliveries={plan.deliveries}
-            month={month}
-            endMonth={endMonth}
-            recipient={recipientName}
-            sender={senderName}
-            message={message}
-            image={plan.image}
-          />
-          <div className="mt-6 bg-paper p-6 ring-1 ring-line">
-            <p className="flex items-baseline justify-between">
-              <span className="font-semibold">{plan.name}</span>
-              <span className="text-xl font-semibold tabular-nums">{formatPrice(plan.priceCents)}</span>
+          <figure aria-label="Gift card preview" className="bg-linen p-6 sm:p-10">
+            <GiftCardFace
+              planName={plan.name}
+              detail={`${plan.deliveries} Garden Bouquets${month ? ` · ${formatMonth(month)} to ${formatMonth(endMonth)}` : ""}`}
+              recipient={recipientName.trim() || "someone lovely"}
+              message={message.trim() ? `“${message.trim()}”` : "Your message will appear here."}
+              sender={senderName.trim() || "you"}
+            />
+            <figcaption className="mt-4 text-center text-[0.8125rem] text-muted">
+              Your printable gift card, ready after checkout.
+            </figcaption>
+          </figure>
+          <div className="mt-6 border-t border-line pt-6">
+            <p className="flex items-baseline justify-between gap-4">
+              <span className="font-display text-[1.25rem]">{plan.name}</span>
+              <span className="text-[1.125rem] tabular-nums">{formatPrice(plan.priceCents)}</span>
             </p>
             <p className="mt-1 text-sm text-muted">One payment. No renewals, no account.</p>
             <div className="mt-5 grid gap-3">
               <Button size="lg" onClick={() => add(true)} disabled={!plan.available}>
-                Give this gift · checkout
+                Continue to checkout
               </Button>
-              <Button variant="secondary" onClick={() => add(false)} disabled={!plan.available}>
+              <Button variant="secondary" size="lg" onClick={() => add(false)} disabled={!plan.available}>
                 Add to cart and keep shopping
               </Button>
             </div>
@@ -269,47 +263,5 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
         </div>
       </aside>
     </div>
-  );
-}
-
-function GiftCardPreview({
-  planName,
-  deliveries,
-  month,
-  endMonth,
-  recipient,
-  sender,
-  message,
-  image,
-}: {
-  planName: string;
-  deliveries: number;
-  month: string;
-  endMonth: string;
-  recipient: string;
-  sender: string;
-  message: string;
-  image: GiftPlan["image"];
-}) {
-  return (
-    <figure aria-label="Gift card preview" className="relative overflow-hidden bg-cream px-8 pt-10 pb-9 text-center shadow-[0_30px_60px_-30px_rgba(42,34,29,0.35)] ring-1 ring-line-strong">
-      {image && (
-        <div className="relative mx-auto -mt-2 mb-2 h-36 w-40">
-          <Image src={image.src} alt="" fill sizes="160px" className="object-contain object-bottom" />
-        </div>
-      )}
-      {!image && <SprigMark size={34} className="mx-auto text-olive" />}
-      <p className="t-eyebrow">A gift from Harlow Brook Flowers</p>
-      <p className="mt-4 font-display text-[2rem] leading-tight">{planName}</p>
-      <p className="mt-1 text-sm text-muted">
-        {deliveries} Garden Bouquets{month ? ` · ${formatMonth(month)}–${formatMonth(endMonth)}` : ""}
-      </p>
-      <p className="mt-7 t-accent text-[1.45rem] leading-snug">For {recipient.trim() || "someone lovely"}</p>
-      <p className="mx-auto mt-3 min-h-12 max-w-xs whitespace-pre-line text-[0.9375rem] leading-relaxed text-ink-soft">
-        {message.trim() ? `“${message.trim()}”` : "Your message will appear here."}
-      </p>
-      <p className="mt-4 t-accent text-lg">with love, {sender.trim() || "you"}</p>
-      <figcaption className="sr-only">Preview of the printable gift card</figcaption>
-    </figure>
   );
 }

@@ -8,7 +8,6 @@ import { cartStore } from "./cart-store";
 import { CartLines } from "./cart-lines";
 import { PickupPicker } from "./pickup-picker";
 import { ButtonLink, buttonClass } from "@/components/ui/button";
-import { IconClose, IconPin } from "@/components/ui/icons";
 import { formatMoney, cn } from "@/lib/format";
 
 export function CartDrawer() {
@@ -47,22 +46,22 @@ export function CartDrawer() {
     >
       <div className="flex h-full flex-col">
         <header className="flex items-center justify-between border-b border-line px-6 py-5">
-          <h2 id="cart-title" className="font-display text-2xl">
+          <h2 id="cart-title" className="font-display text-[1.625rem] font-light">
             Your cart{count > 0 && <span className="ml-2 align-middle text-sm font-sans font-semibold text-muted">{count}</span>}
           </h2>
           <button
             type="button"
             onClick={close}
-            className="grid size-10 place-items-center rounded-full hover:bg-ink/6"
+            className="nav-link"
             aria-label="Close cart"
           >
-            <IconClose size={20} />
+            Close
           </button>
         </header>
 
         {cart.lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 px-8 text-center">
-            <p className="font-display text-3xl leading-tight">Nothing here yet,<br />but the garden&apos;s full.</p>
+            <p className="font-display text-3xl leading-tight font-light">Nothing here yet,<br />but the garden&apos;s full.</p>
             <p className="max-w-xs text-sm text-muted">Choose a bouquet for pickup in Hartland, or give someone a season of flowers.</p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/shop" onClick={close}>Shop bouquets</ButtonLink>
@@ -78,9 +77,7 @@ export function CartDrawer() {
                 <section aria-labelledby="drawer-pickup" className="border-t border-line py-6">
                   <div className="mb-3 flex items-baseline justify-between">
                     <h3 id="drawer-pickup" className="t-label">Pickup day</h3>
-                    <span className="flex items-center gap-1 text-xs text-muted">
-                      <IconPin size={14} /> Hartland, VT
-                    </span>
+                    <span className="text-xs text-muted">Hartland, VT</span>
                   </div>
                   <PickupPicker
                     compact
@@ -136,8 +133,8 @@ export function CartDrawer() {
                 </Link>
                 <span className="text-muted">Secure payment · Guest checkout</span>
               </div>
-              {snapshot?.checkout.demo && (
-                <p className="mt-3 rounded-sm bg-butter/60 px-3 py-2 text-xs text-ink-soft">
+              {snapshot?.checkout.demo && snapshot.checkout.open && (
+                <p className="mt-3 bg-butter/60 px-3 py-2 text-xs text-ink-soft">
                   Preview mode: checkout is a demonstration and no payment is taken.
                 </p>
               )}

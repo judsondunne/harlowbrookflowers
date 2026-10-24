@@ -1,33 +1,27 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { useFormTiming } from "./use-form-timing";
 import Script from "next/script";
 import { contactAction, type FormState } from "@/app/actions/forms";
 import { CONTACT_TOPICS } from "@/content/forms";
 import { Button } from "@/components/ui/button";
 import { SelectField, TextArea, TextField } from "@/components/ui/field";
-import { IconCheck } from "@/components/ui/icons";
 
-export function ContactForm() {
+export function ContactForm({ previewNotice = false }: { previewNotice?: boolean }) {
   const [state, action, pending] = useActionState<FormState, FormData>(contactAction, { status: "idle" });
-  const startedRef = useRef<HTMLInputElement>(null);
+  const timing = useFormTiming();
   const statusRef = useRef<HTMLDivElement>(null);
   const turnstileKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
-  useEffect(() => {
-    if (startedRef.current) startedRef.current.value = String(Date.now());
-  }, []);
   useEffect(() => {
     if (state.status !== "idle") statusRef.current?.focus();
   }, [state]);
 
   if (state.status === "success") {
     return (
-      <div ref={statusRef} tabIndex={-1} role="status" className="bg-paper p-8 text-center ring-1 ring-line outline-none">
-        <span className="mx-auto grid size-12 place-items-center rounded-full bg-ink text-paper">
-          <IconCheck size={22} strokeWidth={1.75} />
-        </span>
-        <p className="mt-5 font-display text-3xl">Message sent.</p>
+      <div ref={statusRef} tabIndex={-1} role="status" className="border-t border-ink pt-8 outline-none">
+        <p className="t-h2">Message sent.</p>
         <p className="mt-3 text-ink-soft">{state.message}</p>
       </div>
     );
@@ -36,8 +30,8 @@ export function ContactForm() {
   const v = state.values ?? {};
   const e = state.fieldErrors ?? {};
   return (
-    <form action={action} noValidate className="space-y-5">
-      <input ref={startedRef} type="hidden" name="startedAt" defaultValue="0" />
+    <form action={action} onSubmit={timing.onSubmit} noValidate className="space-y-5">
+      <input type="hidden" name="startedAt" defaultValue="0" />
       <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label>
           Company <input type="text" name="company" tabIndex={-1} autoComplete="off" />
@@ -46,7 +40,7 @@ export function ContactForm() {
 
       <div ref={statusRef} tabIndex={-1} className="outline-none">
         {state.status === "error" && state.message && (
-          <p role="alert" className="rounded-sm border border-error/40 bg-error/5 p-3 text-sm font-medium text-error">
+          <p role="alert" className="border-l-2 border-error bg-error/5 px-4 py-3 text-sm font-medium text-error">
             {state.message}
           </p>
         )}
@@ -77,6 +71,11 @@ export function ContactForm() {
       </SelectField>
       <TextArea id="c-message" name="message" label="Message" rows={6} maxLength={3000} required defaultValue={v.message} error={e.message} />
 
+      {previewNotice && (
+        <p className="border-l-2 border-olive bg-butter/50 px-4 py-3 text-[0.8125rem] leading-relaxed text-ink-soft">
+          This is a preview of the site, so messages sent from it aren&apos;t kept yet.
+        </p>
+      )}
       {turnstileKey && (
         <>
           <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
@@ -92,7 +91,7 @@ export function ContactForm() {
           </a>
           .
         </p>
-        <Button type="submit" size="lg" disabled={pending} arrow={!pending}>
+        <Button type="submit" size="lg" disabled={pending}>
           {pending ? "Sending…" : "Send message"}
         </Button>
       </div>

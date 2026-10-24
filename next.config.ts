@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
   poweredByHeader: false,
   serverExternalPackages: ["@libsql/client", "libsql"],
+  // Disposable Vercel previews ship the build-time seeded SQLite file with every function (see db/client.ts).
+  outputFileTracingIncludes: { "/**": ["./data/harlow-brook.db"] },
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [60, 75, 85],
@@ -31,6 +33,10 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  async redirects() {
+    // "Our Farm" was folded into About; keep old links and search results working.
+    return [{ source: "/our-farm", destination: "/about", permanent: true }];
   },
 };
 

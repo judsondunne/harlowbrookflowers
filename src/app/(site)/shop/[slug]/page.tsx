@@ -93,9 +93,9 @@ async function ProductContent({ params }: { params: PageProps<"/shop/[slug]">["p
 
           <div className="lg:col-span-5">
             <Eyebrow>Seasonal bouquet · Hartland, VT</Eyebrow>
-            <h1 className="t-h1 mt-4 text-[clamp(2.4rem,4.4vw,3.75rem)]">{product.name}</h1>
+            <h1 className="t-h1 mt-3 text-[clamp(2.4rem,4.4vw,3.75rem)]">{product.name}</h1>
             <div className="mt-4 flex items-baseline gap-4">
-              <p className="text-2xl font-semibold tabular-nums">{formatPrice(product.priceCents)}</p>
+              <p className="text-2xl tabular-nums">{formatPrice(product.priceCents)}</p>
               <p className="text-sm text-muted">{product.sizeLabel}</p>
             </div>
             <p className="t-lead mt-5">{product.summary}</p>
@@ -152,7 +152,7 @@ async function ProductContent({ params }: { params: PageProps<"/shop/[slug]">["p
             <h2 id="more" className="t-h2">
               More from the garden
             </h2>
-            <ButtonLink href="/subscriptions" variant="secondary" arrow>
+            <ButtonLink href="/subscriptions" variant="secondary">
               Or give a whole season
             </ButtonLink>
           </div>
@@ -214,7 +214,7 @@ function PanelSkeleton() {
       <div className="h-4 w-40 rounded-full bg-linen" />
       <div className="h-16 rounded-sm bg-linen/70" />
       <div className="h-16 rounded-sm bg-linen/70" />
-      <div className="h-13 rounded-full bg-linen" />
+      <div className="h-13 bg-linen" />
     </div>
   );
 }

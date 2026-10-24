@@ -1,36 +1,32 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState } from "react";
+import { useFormTiming } from "./use-form-timing";
 import { newsletterAction, type FormState } from "@/app/actions/forms";
 import { NEWSLETTER_CONSENT } from "@/content/forms";
-import { IconArrowRight, IconCheck } from "@/components/ui/icons";
+import { IconCheck } from "@/components/ui/icons";
 import { cn } from "@/lib/format";
 
 /** Email capture with explicit, recorded consent. */
 export function NewsletterForm({ source, tone = "light" }: { source: string; tone?: "light" | "dark" }) {
   const [state, action, pending] = useActionState<FormState, FormData>(newsletterAction, { status: "idle" });
-  const startedRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (startedRef.current) startedRef.current.value = String(Date.now());
-  }, []);
+  const timing = useFormTiming();
   const dark = tone === "dark";
   const id = `nl-${source}`;
 
   if (state.status === "success") {
     return (
       <p role="status" className={cn("flex items-center gap-2 text-sm", dark ? "text-paper" : "text-ink")}>
-        <span className={cn("grid size-6 place-items-center rounded-full", dark ? "bg-paper text-ink" : "bg-ink text-paper")}>
-          <IconCheck size={14} strokeWidth={2} />
-        </span>
+        <IconCheck size={18} strokeWidth={1.5} className={dark ? "text-butter" : "text-olive"} />
         {state.message}
       </p>
     );
   }
 
   return (
-    <form action={action} noValidate className="w-full">
+    <form action={action} onSubmit={timing.onSubmit} noValidate className="w-full">
       <input type="hidden" name="source" value={source} />
-      <input ref={startedRef} type="hidden" name="startedAt" defaultValue="0" />
+      <input type="hidden" name="startedAt" defaultValue="0" />
       <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label>
           Company <input type="text" name="company" tabIndex={-1} autoComplete="off" />
@@ -41,8 +37,8 @@ export function NewsletterForm({ source, tone = "light" }: { source: string; ton
       </label>
       <div
         className={cn(
-          "flex items-center rounded-full border p-1 pl-5 transition-colors focus-within:border-current",
-          dark ? "border-paper/30 bg-paper/5 text-paper" : "border-ink/25 bg-paper text-ink",
+          "flex h-12 items-stretch rounded-[2px] border pl-4 transition-colors focus-within:border-current",
+          dark ? "border-paper/30 bg-paper/5 text-paper" : "border-line-strong bg-paper text-ink",
         )}
       >
         <input
@@ -55,18 +51,17 @@ export function NewsletterForm({ source, tone = "light" }: { source: string; ton
           placeholder="Your email address"
           aria-invalid={!!state.fieldErrors?.email}
           aria-describedby={`${id}-msg`}
-          className={cn("min-w-0 flex-1 bg-transparent py-2 text-sm outline-none", dark ? "placeholder:text-paper/50" : "placeholder:text-muted")}
+          className={cn("min-w-0 flex-1 bg-transparent text-[0.9375rem] outline-none", dark ? "placeholder:text-paper/50" : "placeholder:text-muted")}
         />
         <button
           type="submit"
           disabled={pending}
           className={cn(
-            "grid size-10 shrink-0 place-items-center rounded-full transition-colors disabled:opacity-50",
-            dark ? "bg-paper text-ink hover:bg-white" : "bg-ink text-paper hover:bg-ink-soft",
+            "shrink-0 px-5 text-[0.875rem] font-medium transition-colors disabled:opacity-50",
+            dark ? "text-paper hover:bg-paper/10" : "text-ink hover:bg-ink/[0.045]",
           )}
-          aria-label="Join the list"
         >
-          <IconArrowRight size={18} />
+          {pending ? "Signing up…" : "Sign up"}
         </button>
       </div>
       <label className={cn("mt-3 flex items-start gap-2.5 text-xs leading-relaxed", dark ? "text-paper/70" : "text-muted")}>

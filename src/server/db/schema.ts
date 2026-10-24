@@ -163,6 +163,27 @@ export const contactMessages = sqliteTable("contact_messages", {
   createdAt: text("created_at").notNull().default(now),
 });
 
+/** Business enquiries from /wholesale. Contact details stay in the database and admin only. */
+export const wholesaleInquiries = sqliteTable(
+  "wholesale_inquiries",
+  {
+    id: text("id").primaryKey(),
+    contactName: text("contact_name").notNull(),
+    businessName: text("business_name").notNull(),
+    email: text("email").notNull(),
+    phone: text("phone").notNull().default(""),
+    businessType: text("business_type").notNull(),
+    location: text("location").notNull().default(""),
+    intendedUse: text("intended_use").notNull().default(""),
+    quantity: text("quantity").notNull().default(""),
+    startDate: text("start_date").notNull().default(""),
+    details: text("details").notNull().default(""),
+    status: text("status", { enum: ["new", "replied", "archived"] }).notNull().default("new"),
+    createdAt: text("created_at").notNull().default(now),
+  },
+  (t) => [index("wholesale_inquiries_created_idx").on(t.createdAt)],
+);
+
 export const subscribers = sqliteTable(
   "subscribers",
   {

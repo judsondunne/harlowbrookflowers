@@ -19,14 +19,14 @@ export function QuantityStepper({
   size?: "sm" | "md";
 }) {
   const btn = cn(
-    "grid place-items-center rounded-full text-ink transition-colors hover:bg-ink/6 disabled:opacity-30 disabled:hover:bg-transparent",
-    size === "sm" ? "size-8" : "size-10",
+    "grid place-items-center text-ink transition-colors hover:bg-ink/[0.045] disabled:opacity-30 disabled:hover:bg-transparent",
+    size === "sm" ? "h-full w-8" : "h-full w-10",
   );
   return (
     <div
       role="group"
       aria-label={label}
-      className={cn("inline-flex items-center rounded-full border border-line-strong bg-paper", size === "sm" ? "h-9 px-0.5" : "h-11 px-0.5")}
+      className={cn("inline-flex items-center rounded-[2px] border border-line-strong bg-paper", size === "sm" ? "h-9" : "h-11")}
     >
       <button type="button" className={btn} onClick={() => onChange(value - 1)} disabled={value <= min} aria-label="Decrease quantity">
         <IconMinus size={16} />

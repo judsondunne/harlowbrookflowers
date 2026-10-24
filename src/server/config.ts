@@ -1,5 +1,6 @@
 import "server-only";
 import type { StoreSettings } from "@/domain/settings";
+import { site } from "@/lib/site";
 
 /**
  * demo        – no Stripe key. Orders are recorded and clearly labelled as demonstrations; no money moves.
@@ -39,5 +40,10 @@ export function checkoutGate(settings: StoreSettings): CheckoutGate {
 }
 
 export function siteOrigin() {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  return site.url;
+}
+
+/** True on a Vercel preview running without a hosted database (see db/client.ts): writes don't persist. */
+export function disposableStorage() {
+  return !!process.env.VERCEL && (process.env.DATABASE_URL ?? "file:").startsWith("file:");
 }

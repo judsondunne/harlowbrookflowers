@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { buttonClass } from "@/components/ui/button";
 import { SprigMark } from "@/components/ui/icons";
 
 export default function SiteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -19,11 +20,11 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
         <button
           type="button"
           onClick={reset}
-          className="inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 text-sm font-semibold text-paper hover:bg-ink-soft"
+          className={buttonClass("primary")}
         >
           Try again
         </button>
-        <Link href="/" className="inline-flex h-11 items-center justify-center rounded-full border border-ink/80 px-6 text-sm font-semibold">
+        <Link href="/" className={buttonClass("secondary")}>
           Go to the homepage
         </Link>
       </div>

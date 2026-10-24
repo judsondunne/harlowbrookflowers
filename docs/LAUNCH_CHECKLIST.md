@@ -10,8 +10,10 @@ what stands between the preview and opening the shop.
 | Payments | Demo checkout (no Stripe key). Orders are labelled demos and excluded from sales totals. | Connect Stripe (test first, then live). See SETUP.md §3. |
 | Products & prices | The five products and prices from the brief ($20 / $35 / $50 / $105 / $210) are seeded as provisional. A sample *draft* product shows how drafts work. | Sarah approves each product, price, size label and description. |
 | Stem counts | "About 10 / 20 / 30+ stems" are placeholders. | Sarah confirms or edits the size labels. |
-| Photography | All imagery is licensed **sample photography** from Unsplash (see ASSET_MANIFEST.md), labelled "Sample photograph" on the site. Bouquet cutouts were made from those photos. | Replace with Harlow Brook's own photos; untick "Sample". |
-| Portrait | About page shows a still life with "portrait coming soon". The reference portrait supplied in the brief was **not used**: its rights couldn't be confirmed. | Add an approved portrait of Sarah. |
+| Photography | Apart from Sarah's portrait, imagery is licensed **sample photography** from Unsplash (see ASSET_MANIFEST.md), marked with a small "Sample photo" note. Bouquet cutouts were made from those photos. | Replace with Harlow Brook's own photos, then set `labelSamplePhotos: false` in `src/lib/site.ts`. |
+| Portrait | Sarah's own photo (holding *Agony Hill*) is used on the homepage and About page, as requested. | Confirm the photographer credit and that she's happy with the crop. |
+| Wholesale | `/wholesale` is live with **provisional** offerings, season window and buyer answers (`src/content/wholesale.ts`). No prices, minimums or delivery are published. Inquiries are saved to Admin → Wholesale and emailed to the notification address. | Sarah confirms which offerings she'll actually take on, and how collection works. |
+| Search indexing | `noindex` everywhere while the site runs on a `*.vercel.app` or localhost URL. | Set `NEXT_PUBLIC_SITE_URL` to the real domain; check `robots.txt` allows crawling. |
 | Pickup calendar | 10 rolling demo pickup days (Wed 4–6:30 pm, 12 bouquets; Sat 9–noon, 24 bouquets). | Delete them; add the real season's days and capacities. |
 | Subscription schedule | Season of Flowers starts Jun/Jul/Aug 2027 (3 bouquets); Six Months runs May–Oct 2027 (6 bouquets). Stock: 40 and 25 gifts. | Confirm months are feasible in Hartland (May and October may be thin) and how many gifts to sell. |
 | Pickup instructions | Placeholder text: "[Sarah to add the pickup address…]". | Write real instructions in Admin → Settings. |
@@ -40,6 +42,11 @@ what stands between the preview and opening the shop.
       hand-picks flowers in Hartland; sells at farmers markets). Confirm the flower garden is on the same family farm,
       and add any personal words she'd like. **No quotes are attributed to her.**
 - [ ] Which farmers markets to mention by name (none are named now)
+- [ ] **Wholesale:** which offerings are real (wrapped bouquets, mixed bunches, bulk stems, display arrangements,
+      regular orders), whether there's a minimum, how and where orders are collected, and how far she'd travel, if at
+      all. Edit `src/content/wholesale.ts`; nothing there is a commitment yet.
+- [ ] Set **Admin → Settings → order notification email** so wholesale inquiries and contact messages reach her
+      inbox, not just the admin outbox.
 
 ## Legal & tax (needs professional review)
 
@@ -52,7 +59,8 @@ what stands between the preview and opening the shop.
 ## Technical go-live steps
 
 1. Provision Turso, Vercel Blob, Resend and Stripe (SETUP.md).
-2. Set production environment variables, including `NEXT_PUBLIC_SITE_URL`.
+2. Set production environment variables, including `NEXT_PUBLIC_SITE_URL` (the real domain also lifts the pre-launch
+   `noindex`).
 3. Deploy; run `db:migrate` and the first `db:seed` against production; change the admin password.
 4. Replace demo pickup days, products, photos and settings with approved content.
 5. Place a real **test-mode** order end to end (card `4242 4242 4242 4242`), check the email and admin, then refund it.

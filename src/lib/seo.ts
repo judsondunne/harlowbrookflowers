@@ -26,7 +26,7 @@ export function pageMetadata(input: {
       locale: site.locale,
       images: [input.image ?? { url: "/og/harlow-brook.jpg", alt: site.name, width: 1200, height: 630 }],
     },
-    robots: input.noindex ? { index: false, follow: false } : undefined,
+    robots: input.noindex || !site.indexable ? { index: false, follow: false } : undefined,
   };
 }
 
@@ -91,6 +91,30 @@ export function productJsonLd(product: Product, today: string) {
       shippingDetails: undefined,
       hasMerchantReturnPolicy: undefined,
       availableDeliveryMethod: "https://schema.org/OnSitePickup",
+    },
+  };
+}
+
+/** Wholesale supply as a Service offered by the farm. No prices or delivery terms until Sarah sets them. */
+export function wholesaleServiceJsonLd(offerings: string[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${site.url}/wholesale#service`,
+    name: "Wholesale cut flowers from Harlow Brook Flowers",
+    serviceType: "Wholesale locally grown cut flowers",
+    description:
+      "Seasonal, hand-grown cut flowers from a family farm in Hartland, Vermont, for shops, farm stands, farmers markets, cafés and other local businesses. Collected at the farm.",
+    url: abs("/wholesale"),
+    provider: { "@id": `${site.url}/#business` },
+    areaServed: [
+      { "@type": "City", name: "Hartland, Vermont" },
+      { "@type": "AdministrativeArea", name: "Upper Valley, Vermont and New Hampshire" },
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Wholesale flowers",
+      itemListElement: offerings.map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
     },
   };
 }

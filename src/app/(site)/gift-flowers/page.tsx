@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { Route } from "next";
-import { Photo } from "@/components/home/sections";
+import { Photo } from "@/components/ui/photo";
 import { ProductCard } from "@/components/shop/product-card";
 import { ButtonLink } from "@/components/ui/button";
-import { Eyebrow, OrnamentTitle } from "@/components/ui/typography";
+import { Eyebrow, CenteredTitle } from "@/components/ui/typography";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getListedProducts } from "@/server/catalog";
 import { getFarmToday } from "@/server/today";
@@ -41,15 +41,13 @@ export default async function GiftFlowersPage() {
       <section className="container-page grid items-end gap-12 pt-14 pb-16 sm:pt-20 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-6">
           <Eyebrow>Gift flowers</Eyebrow>
-          <h1 className="t-h1 mt-5">The kind of gift people remember.</h1>
+          <h1 className="t-h1 mt-3">The kind of gift people remember.</h1>
           <p className="t-lead mt-6">
             Flowers grown just down the road, picked for the day and given with a handwritten note. Choose a single bouquet
             for a moment, or a season of them for someone you love.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/subscriptions" arrow>
-              Give a season
-            </ButtonLink>
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <ButtonLink href="/subscriptions">Give a season of flowers</ButtonLink>
             <ButtonLink href="/shop" variant="secondary">
               Choose a bouquet
             </ButtonLink>
@@ -77,15 +75,16 @@ export default async function GiftFlowersPage() {
       </section>
 
       <section className="container-page py-20 sm:py-24">
-        <OrnamentTitle>For every occasion</OrnamentTitle>
-        <ul className="mt-14 grid gap-px overflow-hidden bg-line ring-1 ring-line sm:grid-cols-2 lg:grid-cols-3">
+        <CenteredTitle>For every occasion</CenteredTitle>
+        <ul className="mx-auto mt-14 grid max-w-5xl gap-x-12 sm:grid-cols-2">
           {occasions.map((o) => (
-            <li key={o.title} className="bg-cream">
-              <Link href={o.href as Route} className="group flex h-full flex-col p-7 transition-colors hover:bg-paper">
-                <span className="font-display text-2xl">{o.title}</span>
-                <span className="mt-2 flex-1 text-[0.9375rem] text-ink-soft">{o.text}</span>
-                <span className="mt-6 text-xs font-semibold tracking-[0.1em] uppercase group-hover:underline group-hover:underline-offset-4">
-                  Choose this →
+            <li key={o.title} className="border-t border-line">
+              <Link href={o.href as Route} className="group flex items-baseline justify-between gap-6 py-6">
+                <span>
+                  <span className="block font-display text-[1.5rem] leading-tight font-light decoration-1 underline-offset-[0.2em] group-hover:underline">
+                    {o.title}
+                  </span>
+                  <span className="mt-1.5 block text-[0.9375rem] text-ink-soft">{o.text}</span>
                 </span>
               </Link>
             </li>

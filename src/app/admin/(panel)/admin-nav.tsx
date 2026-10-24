@@ -12,6 +12,7 @@ const items: { href: Route; label: string }[] = [
   { href: "/admin/products", label: "Products" },
   { href: "/admin/subscriptions", label: "Gift subscriptions" },
   { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/wholesale", label: "Wholesale" },
   { href: "/admin/subscribers", label: "Email list" },
   { href: "/admin/settings", label: "Settings" },
 ];

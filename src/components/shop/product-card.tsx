@@ -5,6 +5,7 @@ import { primaryImage, productAvailability, type Product } from "@/domain/catalo
 import { formatPrice, cn } from "@/lib/format";
 import { formatDateShort } from "@/lib/time";
 import { QuickAdd } from "./quick-add";
+import { buttonClass } from "@/components/ui/button";
 
 export function availabilityLabel(product: Product, today: string) {
   const a = productAvailability(product, today);
@@ -54,8 +55,8 @@ export function ProductCard({
         {badge && (
           <span
             className={cn(
-              "absolute top-3 left-3 rounded-full px-3 py-1 text-[0.625rem] font-semibold tracking-[0.14em] uppercase",
-              badge.tone === "ink" ? "bg-ink text-paper" : "bg-paper/90 text-muted",
+              "absolute top-3 left-3 px-2 py-1 text-[0.75rem] leading-none font-medium",
+              badge.tone === "ink" ? "bg-ink text-paper" : "bg-cream text-muted",
             )}
           >
             {badge.text}
@@ -64,26 +65,23 @@ export function ProductCard({
       </Link>
       <div className="mt-5 flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="font-display text-[1.5rem] leading-tight tracking-[-0.01em]">
+          <h3 className="font-display text-[1.5rem] leading-tight">
             <Link href={href} className="after:absolute after:inset-0 after:content-['']">
               {product.name}
             </Link>
           </h3>
           <p className="mt-1 text-sm leading-relaxed text-ink-soft">{product.tagline}</p>
         </div>
-        <p className="shrink-0 pt-1 text-[1.0625rem] font-semibold tabular-nums">{formatPrice(product.priceCents)}</p>
+        <p className="shrink-0 pt-1 text-[1.0625rem] tabular-nums">{formatPrice(product.priceCents)}</p>
       </div>
       <div className="relative z-10 mt-4 flex items-center justify-between gap-3">
-        <span className="text-[0.75rem] font-semibold tracking-[0.08em] text-olive uppercase">
+        <span className="text-[0.8125rem] text-muted">
           {perBouquet ? `${product.deliveries} bouquets · ${formatPrice(perBouquet)} each` : product.sizeLabel}
         </span>
         {product.kind === "bouquet" ? (
-          <QuickAdd productId={product.id} name={product.name} disabled={availability.state !== "available"} label="Add" />
+          <QuickAdd productId={product.id} name={product.name} disabled={availability.state !== "available"} />
         ) : (
-          <Link
-            href={href}
-            className="inline-flex h-10 items-center rounded-full border border-ink/80 px-4 text-[0.8125rem] font-semibold transition-colors hover:bg-ink hover:text-paper"
-          >
+          <Link href={href} className={buttonClass("secondary", "sm")}>
             Give as a gift
           </Link>
         )}

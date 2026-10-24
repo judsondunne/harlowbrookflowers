@@ -1,3 +1,4 @@
+import { buttonClass } from "@/components/ui/button";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import type { Metadata } from "next";
@@ -39,7 +40,7 @@ async function DemoPayment({ searchParams }: { searchParams: PageProps<"/checkou
   return (
     <>
       <p className="t-eyebrow">Demonstration · no payment is taken</p>
-      <h1 className="t-h1 mt-4">Demo payment</h1>
+      <h1 className="t-h1 mt-3">Demo payment</h1>
       <p className="t-lead mt-4">
         Stripe isn&apos;t connected yet, so this page stands in for the secure payment step. Choose an outcome to see how
         the shop handles it. Order {formatOrderNumber(order.number)} is recorded as a demo and never counts as a sale.
@@ -70,13 +71,13 @@ async function DemoPayment({ searchParams }: { searchParams: PageProps<"/checkou
       {pending ? (
         <form action={demoPaymentAction} className="mt-8 grid gap-3 sm:grid-cols-3">
           <input type="hidden" name="token" value={token} />
-          <button name="outcome" value="succeed" className="h-12 rounded-full bg-ink px-5 text-sm font-semibold text-paper hover:bg-ink-soft">
+          <button name="outcome" value="succeed" className={buttonClass("primary")}>
             Simulate successful payment
           </button>
-          <button name="outcome" value="fail" className="h-12 rounded-full border border-ink/70 px-5 text-sm font-semibold hover:bg-ink/5">
+          <button name="outcome" value="fail" className={buttonClass("secondary")}>
             Simulate declined card
           </button>
-          <button name="outcome" value="cancel" className="h-12 rounded-full px-5 text-sm font-semibold underline-offset-4 hover:underline">
+          <button name="outcome" value="cancel" className="link-rule px-2">
             Cancel and go back
           </button>
         </form>

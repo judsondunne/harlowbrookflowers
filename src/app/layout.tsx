@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Gloock, Instrument_Serif, Manrope } from "next/font/google";
+import { Gloock, Hanken_Grotesk, Instrument_Serif, Newsreader } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { Analytics } from "@/components/site/analytics";
 
+// Gloock + Instrument Serif italic: the wordmark lockup only (hero, logo, footer sign-off).
 const gloock = Gloock({ weight: "400", subsets: ["latin"], variable: "--font-gloock", display: "swap" });
 const instrument = Instrument_Serif({
   weight: "400",
@@ -12,7 +13,15 @@ const instrument = Instrument_Serif({
   variable: "--font-instrument",
   display: "swap",
 });
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+// Newsreader (with optical sizes): every heading and the occasional italic. Hanken Grotesk: text and interface.
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -32,6 +41,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
   formatDetection: { telephone: false, address: false, email: false },
   verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
+  robots: site.indexable ? undefined : { index: false, follow: false },
 };
 
 export const viewport: Viewport = {
@@ -41,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${gloock.variable} ${instrument.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${gloock.variable} ${instrument.variable} ${newsreader.variable} ${hanken.variable}`}>
       <body className="min-h-dvh bg-cream antialiased">
         {children}
         <Analytics />

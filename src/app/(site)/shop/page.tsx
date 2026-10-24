@@ -56,7 +56,7 @@ export default async function ShopPage() {
             <div className="mb-10 grid gap-6 border-b border-line pb-6 lg:grid-cols-2 lg:items-end">
               <div>
                 <Eyebrow>Gift subscriptions</Eyebrow>
-                <h2 id="plans" className="t-h2 mt-4">
+                <h2 id="plans" className="t-h2 mt-3">
                   A season of flowers, given once.
                 </h2>
               </div>

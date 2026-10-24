@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { Hero, type HeroSlide } from "@/components/home/hero";
 import {
   AuthorNote,
-  FeatureStrip,
   NewsletterSection,
-  PickupSteps,
-  SeasonBand,
+  SeasonSection,
   ShopSection,
   StorySection,
   SubscriptionBand,
+  WholesaleBand,
 } from "@/components/home/sections";
 import { JsonLd } from "@/components/seo/json-ld";
 import { homeContent } from "@/content/home";
@@ -56,12 +55,11 @@ export default async function HomePage() {
     <>
       <JsonLd data={localBusinessJsonLd()} />
       <Hero slides={slides} copy={homeContent.hero} />
-      <FeatureStrip />
       <ShopSection products={bouquetsBySize} today={today} />
       <StorySection />
       <SubscriptionBand plans={plans} />
-      <PickupSteps pickupLocation={settings.pickupLocationPublic} />
-      <SeasonBand seasonNote={settings.seasonNote} />
+      <SeasonSection seasonNote={settings.seasonNote} />
+      <WholesaleBand />
       <AuthorNote />
       <NewsletterSection />
     </>

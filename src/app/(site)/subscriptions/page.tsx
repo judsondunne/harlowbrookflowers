@@ -1,11 +1,12 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { GiftBuilder, type GiftPlan } from "@/components/subscriptions/gift-builder";
+import { GiftCardFace } from "@/components/subscriptions/gift-card";
 import { AccordionItem } from "@/components/ui/accordion";
+import { ButtonLink } from "@/components/ui/button";
+import { Photo } from "@/components/ui/photo";
 import { Eyebrow } from "@/components/ui/typography";
-import { Photo } from "@/components/home/sections";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqGroups } from "@/content/faq";
 import { primaryImage, productAvailability } from "@/domain/catalog";
@@ -13,13 +14,17 @@ import { getListedProducts } from "@/server/catalog";
 import { getFarmToday } from "@/server/today";
 import { breadcrumbJsonLd, faqJsonLd, pageMetadata, productJsonLd } from "@/lib/seo";
 import { formatPrice } from "@/lib/format";
+import { formatMonth } from "@/lib/time";
 
 export const metadata: Metadata = pageMetadata({
   title: "Flower Subscription Gifts · A Season of Vermont Flowers",
   description:
-    "Give a prepaid flower subscription from Harlow Brook Flowers: monthly Garden Bouquets through the Vermont growing season, collected in Hartland. One payment, a gift note, no renewals.",
+    "Give a prepaid flower subscription from Harlow Brook Flowers: a fresh Garden Bouquet each month of the Vermont growing season, collected in Hartland. One payment, a printable gift card, no renewals.",
   path: "/subscriptions",
 });
+
+const numberWord = (n: number) => ["no", "one", "two", "three", "four", "five", "six", "seven", "eight"][n] ?? String(n);
+const capitalize = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 export default async function SubscriptionsPage() {
   const [products, today] = await Promise.all([getListedProducts("subscription"), getFarmToday()]);
@@ -40,6 +45,46 @@ export default async function SubscriptionsPage() {
     };
   });
   const giftFaqs = faqGroups.find((g) => g.id === "gifts")?.items ?? [];
+  const fromPrice = plans.length ? Math.min(...plans.map((p) => p.priceCents)) : 0;
+  const perBouquet = plans[0] ? Math.round(plans[0].priceCents / plans[0].deliveries) : 0;
+  const months = [...new Set(plans.flatMap((p) => p.startMonths))].sort();
+  const firstMonth = months[0];
+  const seasonYear = firstMonth?.slice(0, 4);
+
+  // Everything a giver needs to know, in plain language. PROVISIONAL wording: Sarah to confirm pickup details.
+  const included: [string, React.ReactNode][] = [
+    [
+      "What they receive",
+      <>
+        A{" "}
+        <Link href="/shop/garden-bouquet" className="underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+          Garden Bouquet
+        </Link>{" "}
+        each month: a hand-tied mix of about 20 stems, picked from whatever is blooming that week.
+      </>,
+    ],
+    [
+      "How many",
+      `${capitalize(plans.map((p) => `${numberWord(p.deliveries)} bouquets (${p.name}, ${formatPrice(p.priceCents)})`).join(" or "))}.` +
+        (perBouquet ? ` ${formatPrice(perBouquet)} a bouquet either way.` : ""),
+    ],
+    [
+      "When",
+      `Once a month through the ${seasonYear ?? ""} Vermont growing season${firstMonth ? `, starting as early as ${formatMonth(firstMonth)}` : ""}. You choose the first month.`,
+    ],
+    [
+      "Where",
+      "Collected at the farm in Hartland, Vermont, on the pickup day that suits them. Flowers are never shipped.",
+    ],
+    [
+      "How you give it",
+      "Choose a plan, write your note and pay once. Print the gift card to give in person, or we can email your note to them.",
+    ],
+    [
+      "After you order",
+      "Before the season begins, Sarah writes with each month's pickup dates, to them or to you to pass on. Nothing renews, and there's no account to manage.",
+    ],
+  ];
 
   return (
     <>
@@ -49,120 +94,108 @@ export default async function SubscriptionsPage() {
           faqJsonLd(giftFaqs),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: "Subscriptions", path: "/subscriptions" },
+            { name: "Flower subscriptions", path: "/subscriptions" },
           ]),
         ]}
       />
 
-      <section className="container-page grid items-end gap-12 pt-14 pb-16 sm:pt-20 lg:grid-cols-12">
-        <div className="lg:col-span-7">
+      <section className="container-page grid gap-14 pt-12 pb-20 sm:pt-16 lg:grid-cols-12 lg:items-center lg:gap-16 lg:pb-28">
+        <div className="lg:col-span-5">
           <Eyebrow>Flower subscriptions</Eyebrow>
-          <h1 className="t-h1 mt-5">
-            Give a season <span className="t-accent text-olive">of</span> flowers.
-          </h1>
-          <p className="t-lead mt-6 max-w-xl">
-            A prepaid gift of monthly Garden Bouquets through the 2027 Vermont growing season. You pay once and write a note;
-            your recipient collects fresh flowers in Hartland, month after month.
+          <h1 className="t-h1 mt-3">Give a season of flowers.</h1>
+          <p className="t-lead mt-6 max-w-lg">
+            A gift that keeps arriving. Each month of the Vermont growing season, the person you love collects a fresh
+            bouquet from our garden in Hartland, picked by hand that week.
           </p>
-          <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold">
-            {["One payment, no renewals", "Printable gift card", "Pickup in Hartland, VT"].map((t) => (
-              <li key={t} className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-olive" /> {t}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="relative hidden h-[22rem] lg:col-span-5 lg:block">
-          {plans.slice(0, 2).map((p, i) =>
-            p.image ? (
-              <div key={p.id} className={i === 0 ? "absolute bottom-0 left-0 h-[88%] w-[62%]" : "absolute right-0 bottom-0 h-full w-[56%]"}>
-                <Image src={p.image.src} alt={p.image.alt} fill priority sizes="300px" className="object-contain object-bottom" />
-              </div>
-            ) : null,
-          )}
-          <span className="absolute inset-x-[10%] -bottom-2 h-6 rounded-[50%] bg-[radial-gradient(closest-side,rgba(42,34,29,.16),transparent)] blur-[3px]" />
-        </div>
-      </section>
-
-      <section className="border-y border-line bg-paper">
-        <dl className="container-page grid divide-line py-2 sm:grid-cols-3 sm:divide-x">
-          {plans.map((p) => (
-            <div key={p.id} className="py-6 sm:px-8 first:sm:pl-0">
-              <dt className="font-display text-2xl">{p.name}</dt>
-              <dd className="mt-1 text-sm text-ink-soft">
-                {formatPrice(p.priceCents)} · {p.deliveries} monthly bouquets · {formatPrice(Math.round(p.priceCents / p.deliveries))} per bouquet
-              </dd>
-            </div>
-          ))}
-          <div className="py-6 sm:px-8">
-            <dt className="font-display text-2xl">Each bouquet</dt>
-            <dd className="mt-1 text-sm text-ink-soft">
-              A{" "}
-              <Link href="/shop/garden-bouquet" className="underline underline-offset-4">
-                Garden Bouquet
-              </Link>
-              , picked for the recipient&apos;s pickup day.
-            </dd>
+          <p className="mt-6 text-[0.9375rem] text-ink-soft">
+            From <span className="text-ink tabular-nums">{formatPrice(fromPrice)}</span>, paid once and never renewed.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+            <ButtonLink href="/subscriptions#gift" size="lg">
+              Choose a gift
+            </ButtonLink>
+            <Link href="#included" className="link-rule">
+              What&apos;s included
+            </Link>
           </div>
-        </dl>
+        </div>
+
+        <div className="relative lg:col-span-6 lg:col-start-7">
+          <Photo src="/images/photos/zinnias-mason-jar.webp" priority className="aspect-[4/5] w-full sm:ml-auto sm:w-[82%]" sizes="(max-width: 1024px) 90vw, 42vw" />
+          <GiftCardFace
+            className="relative -mt-24 mr-6 ml-auto w-[86%] max-w-[21rem] sm:absolute sm:bottom-10 sm:left-0 sm:m-0 sm:w-[19rem]"
+            planName="A Season of Flowers"
+            detail="3 Garden Bouquets"
+            recipient="Mom"
+            message="“For every month you've made brighter.”"
+            sender="Anna"
+          />
+        </div>
       </section>
 
-      <section id="gift" aria-labelledby="builder" className="container-page scroll-mt-28 py-20 sm:py-24">
-        <h2 id="builder" className="t-h2 mb-12">
-          Build your gift
-        </h2>
-        <Suspense fallback={<div className="h-[40rem] animate-pulse rounded-sm bg-linen/50" />}>
+      <section id="included" aria-labelledby="included-title" className="scroll-mt-24 border-t border-line bg-paper">
+        <div className="container-page grid gap-12 py-20 sm:py-24 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <h2 id="included-title" className="t-h2">
+              What&apos;s included
+            </h2>
+            <p className="mt-5 max-w-sm text-[1.0625rem] leading-relaxed text-ink-soft">
+              Simple to give, nothing for them to manage. Here is exactly how it works.
+            </p>
+          </div>
+          <dl className="lg:col-span-8">
+            {included.map(([term, detail]) => (
+              <div key={term} className="grid gap-1 border-t border-line py-5 last:border-b sm:grid-cols-[11rem_1fr] sm:gap-8">
+                <dt className="font-display text-[1.1875rem] leading-snug">{term}</dt>
+                <dd className="text-[0.9688rem] leading-relaxed text-ink-soft">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <section id="gift" aria-labelledby="builder" className="container-page scroll-mt-24 py-20 sm:py-28">
+        <div className="mb-12 max-w-2xl">
+          <h2 id="builder" className="t-h2">
+            Choose your gift
+          </h2>
+          <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-soft">
+            Pick a plan, tell us who it&apos;s for, and write the note that goes on their card.
+          </p>
+        </div>
+        <Suspense fallback={<div className="h-[40rem] animate-pulse bg-linen/50" />}>
           <GiftBuilder plans={plans} />
         </Suspense>
       </section>
 
-      <section aria-labelledby="recipient" className="bg-ink text-paper">
-        <div className="container-page grid gap-12 py-20 sm:py-24 lg:grid-cols-12">
+      <section aria-labelledby="sub-faq" className="border-t border-line">
+        <div className="container-page grid gap-12 py-20 sm:py-24 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <Eyebrow className="text-butter/80">For the recipient</Eyebrow>
-            <h2 id="recipient" className="t-h2 mt-5 text-paper">
-              Nothing to manage. Just flowers.
+            <Photo src="/images/photos/wildflowers-blue-bucket.webp" className="aspect-[4/5]" sizes="(max-width: 1024px) 90vw, 40vw" />
+          </div>
+          <div className="lg:col-span-6 lg:col-start-7">
+            <h2 id="sub-faq" className="t-h2">
+              Questions about gifting
             </h2>
-            <p className="mt-6 text-[1.0625rem] leading-relaxed text-paper/75">
-              Before the season begins, Sarah writes to your recipient with each month&apos;s pickup dates. They choose a
-              day, stop by the farm in Hartland, and take home a fresh Garden Bouquet.
+            <div className="mt-8 border-t border-line">
+              {giftFaqs.map((f) => (
+                <AccordionItem key={f.q} title={f.q}>
+                  <p>{f.a}</p>
+                </AccordionItem>
+              ))}
+            </div>
+            <p className="mt-8 text-[0.9375rem] text-ink-soft">
+              Looking for something for this week instead?{" "}
+              <Link href="/shop" className="underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+                Choose a single bouquet
+              </Link>{" "}
+              or read{" "}
+              <Link href="/faq" className="underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+                all questions
+              </Link>
+              .
             </p>
           </div>
-          <ol className="grid gap-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
-            {[
-              ["You give the gift", "Choose a plan, write your note and pay once."],
-              ["They hear from Sarah", "An email with the season's pickup dates, sent to them or to you to pass on."],
-              ["They collect each month", "A Garden Bouquet picked for their pickup day."],
-              ["The season ends gently", "No renewals and no surprise charges, ever."],
-            ].map(([t, d], i) => (
-              <li key={t} className="border-t border-paper/15 pt-5">
-                <p className="text-xs font-semibold text-butter/70 tabular-nums">{String(i + 1).padStart(2, "0")}</p>
-                <p className="mt-2 font-display text-[1.4rem] leading-tight">{t}</p>
-                <p className="mt-2 text-sm text-paper/65">{d}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section aria-labelledby="sub-faq" className="container-page grid gap-12 py-20 sm:py-24 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <Photo src="/images/photos/wildflowers-blue-bucket.webp" className="aspect-[4/5]" sizes="(max-width: 1024px) 90vw, 40vw" />
-        </div>
-        <div className="lg:col-span-6 lg:col-start-7">
-          <h2 id="sub-faq" className="t-h2">
-            Questions about gifting
-          </h2>
-          <div className="mt-8 border-t border-line">
-            {giftFaqs.map((f) => (
-              <AccordionItem key={f.q} title={f.q}>
-                <p>{f.a}</p>
-              </AccordionItem>
-            ))}
-          </div>
-          <Link href="/faq" className="link-rule mt-8">
-            All questions
-          </Link>
         </div>
       </section>
     </>

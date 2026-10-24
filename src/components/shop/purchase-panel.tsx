@@ -7,7 +7,6 @@ import { cartStore } from "@/components/cart/cart-store";
 import { PickupPicker } from "@/components/cart/pickup-picker";
 import { QuantityStepper } from "@/components/cart/quantity-stepper";
 import { Button } from "@/components/ui/button";
-import { IconCheck, IconInfo } from "@/components/ui/icons";
 import type { PickupWindowAvailability } from "@/domain/catalog";
 import { cn, formatPrice } from "@/lib/format";
 
@@ -68,8 +67,8 @@ export function PurchasePanel({
 
   if (!purchasable) {
     return (
-      <div className="rounded-sm border border-line-strong bg-paper p-5">
-        <p className="font-semibold">{unavailableReason ?? "Not available right now"}</p>
+      <div className="border border-line-strong bg-paper p-5">
+        <p className="font-medium">{unavailableReason ?? "Not available right now"}</p>
         <p className="mt-1 text-sm text-muted">
           Join the list at the bottom of the page and we&apos;ll write when it&apos;s back.
         </p>
@@ -82,7 +81,7 @@ export function PurchasePanel({
       <section aria-labelledby={`${id}-pickup`}>
         <div className="mb-3 flex items-baseline justify-between gap-4">
           <h2 id={`${id}-pickup`} className="t-label">
-            1 · Choose a pickup day
+            Pickup day
           </h2>
           <Link href="/how-it-works" className="text-xs text-muted underline underline-offset-4 hover:text-ink">
             Where &amp; when?
@@ -104,7 +103,7 @@ export function PurchasePanel({
 
       <section aria-labelledby={`${id}-qty`} className="flex items-center justify-between gap-4">
         <h2 id={`${id}-qty`} className="t-label">
-          2 · Quantity
+          Quantity
         </h2>
         <QuantityStepper label={`Quantity of ${product.name}`} value={quantity} max={maxQuantity} onChange={setQuantity} />
       </section>
@@ -118,7 +117,7 @@ export function PurchasePanel({
             className="mt-1 size-4 accent-[var(--color-ink)]"
           />
           <span>
-            <span className="block font-semibold">Add a handwritten card</span>
+            <span className="block font-medium">Add a handwritten card</span>
             <span className="block text-sm text-muted">Free. Sarah writes your note on a card tucked into the bouquet.</span>
           </span>
         </label>
@@ -134,7 +133,7 @@ export function PurchasePanel({
               rows={3}
               onChange={(e) => setCard(e.target.value)}
               placeholder="Happy birthday, with love from…"
-              className="w-full resize-none rounded-sm border border-line-strong bg-paper px-4 py-3 text-[0.9375rem] outline-none focus:border-ink"
+              className="w-full resize-none rounded-[2px] border border-line-strong bg-paper px-4 py-3 text-[0.9375rem] outline-none focus:border-ink"
             />
             <p className="mt-1 text-right text-xs text-muted tabular-nums">{card.length}/300</p>
           </div>
@@ -167,19 +166,14 @@ export function PurchasePanel({
             </Button>
           </div>
         </div>
-        <ul className="mt-5 space-y-2 text-sm text-ink-soft">
-          {["Picked for your pickup day", "Collect at the farm in Hartland, VT", "Secure checkout, no account needed"].map((t) => (
-            <li key={t} className="flex items-center gap-2.5">
-              <IconCheck size={16} className="text-olive" strokeWidth={1.75} /> {t}
-            </li>
-          ))}
-        </ul>
+        <p className="mt-4 text-center text-[0.8125rem] leading-relaxed text-muted">
+          Picked for your pickup day · Collected at the farm in Hartland · Secure checkout, no account needed
+        </p>
       </div>
 
-      <p className="flex gap-3 rounded-sm bg-butter/55 p-4 text-sm leading-relaxed text-ink-soft">
-        <IconInfo size={20} className="mt-0.5 shrink-0 text-olive" />
+      <p className="border-t border-line pt-5 text-sm leading-relaxed text-ink-soft">
         <span>
-          <span className="font-semibold text-ink">Seasonal by nature.</span> Photos show the style and size. Your bouquet
+          <span className="font-display text-[1rem] text-ink italic">Seasonal by nature.</span> Photos show the style and size. Your bouquet
           is made from what&apos;s blooming that week, so the exact flowers and colors will differ.
         </span>
       </p>

@@ -10,7 +10,8 @@ import { loadSettings } from "@/server/settings";
 import { paymentMode } from "@/server/config";
 import { ButtonLink } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/typography";
-import { IconCalendar, IconCheck, IconPin, SprigMark } from "@/components/ui/icons";
+import { buttonClass } from "@/components/ui/button";
+import { SprigMark } from "@/components/ui/icons";
 import { AwaitConfirmation, ClearCart, PrintButton } from "./clear-cart";
 import { formatMoney, formatOrderNumber } from "@/lib/format";
 import { addMonths, formatDateLong, formatMonth, formatTimeRange } from "@/lib/time";
@@ -114,14 +115,11 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
     <div className="mx-auto max-w-4xl">
       <ClearCart />
       <div className="text-center print:hidden">
-        <span className="mx-auto grid size-14 place-items-center rounded-full bg-ink text-paper">
-          <IconCheck size={26} strokeWidth={1.75} />
-        </span>
-        <Eyebrow className="mt-6">
+        <Eyebrow>
           Order {formatOrderNumber(order.number)}
           {order.isDemo ? " · Demo order, no payment taken" : ""}
         </Eyebrow>
-        <h1 className="t-h1 mt-4">Thank you, {first}.</h1>
+        <h1 className="t-h1 mt-3">Thank you, {first}.</h1>
         <p className="t-lead mx-auto mt-5 max-w-xl">
           {window
             ? "Your flowers will be picked for your pickup day. A confirmation with directions is on its way to "
@@ -133,21 +131,20 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
       <div className="mt-14 grid gap-8 lg:grid-cols-2 print:hidden">
         {window && (
           <section aria-labelledby="pickup" className="bg-paper p-7 ring-1 ring-line">
-            <h2 id="pickup" className="t-label flex items-center gap-2">
-              <IconCalendar size={18} className="text-olive" /> Your pickup
+            <h2 id="pickup" className="t-label">
+              Your pickup
             </h2>
-            <p className="mt-4 font-display text-3xl leading-tight">{formatDateLong(window.date)}</p>
+            <p className="mt-4 font-display text-3xl leading-tight font-light">{formatDateLong(window.date)}</p>
             <p className="mt-1 text-ink-soft">{formatTimeRange(window.startTime, window.endTime)}</p>
-            <p className="mt-5 flex items-start gap-2 text-sm">
-              <IconPin size={18} className="mt-0.5 shrink-0 text-olive" />
+            <p className="mt-5 text-sm">
               <span>
-                <span className="block font-semibold">{settings.pickupLocationPublic}</span>
+                <span className="block font-medium">{settings.pickupLocationPublic}</span>
                 <span className="mt-1 block whitespace-pre-line text-ink-soft">{settings.pickupInstructions}</span>
               </span>
             </p>
             <a
               href={`/api/orders/${order.publicToken}/calendar`}
-              className="mt-6 inline-flex h-10 items-center rounded-full border border-ink/70 px-4 text-sm font-semibold hover:bg-ink hover:text-paper"
+              className={buttonClass("secondary", "sm", "mt-6")}
             >
               Add to calendar
             </a>
@@ -193,16 +190,18 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
           </div>
           <div className="space-y-8">
             {gifts.map((g) => (
-              <article key={g.id} className="relative overflow-hidden bg-cream p-10 text-center ring-1 ring-line-strong sm:p-14 print:ring-0">
-                <SprigMark size={36} className="mx-auto text-olive" />
-                <p className="t-eyebrow mt-6">A gift from Harlow Brook Flowers</p>
-                <p className="mt-6 font-display text-[clamp(2rem,5vw,3.25rem)] leading-tight">{g.planName}</p>
+              <article key={g.id} className="relative overflow-hidden bg-paper p-10 text-center ring-1 ring-line sm:p-14 print:ring-0">
+                <span aria-hidden className="pointer-events-none absolute inset-3 border border-line" />
+                <p className="font-wordmark text-[1.5rem] leading-none tracking-[-0.02em]">
+                  Harlow Brook <span className="font-accent text-olive italic">Flowers</span>
+                </p>
+                <p className="mt-8 font-display text-[clamp(2rem,5vw,3.25rem)] leading-tight font-light">{g.planName}</p>
                 <p className="mt-3 text-ink-soft">
                   {g.deliveriesTotal} Garden Bouquets, {formatMonth(g.startMonth)}
                   {g.deliveriesTotal > 1 ? ` to ${formatMonth(addMonths(g.startMonth, g.deliveriesTotal - 1))}` : ""}
                 </p>
                 <p className="mt-10 t-accent text-[1.6rem] leading-snug">For {g.recipientName}</p>
-                {g.message && <p className="mx-auto mt-5 max-w-md whitespace-pre-line text-[1.0625rem] leading-relaxed">“{g.message}”</p>}
+                {g.message && <p className="mx-auto mt-5 max-w-md font-display text-[1.125rem] leading-relaxed whitespace-pre-line">“{g.message}”</p>}
                 <p className="mt-6 t-accent text-xl">with love, {g.senderName}</p>
                 <p className="mt-10 text-xs text-muted">
                   Collected each month in Hartland, Vermont. Sarah will be in touch with pickup dates.
@@ -227,9 +226,8 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
                 "Before the season begins, Sarah writes with the pickup dates.",
                 "Your recipient collects a fresh bouquet in Hartland each month.",
               ]
-          ).map((t, i) => (
-            <li key={t} className="text-sm leading-relaxed text-ink-soft">
-              <span className="mb-2 block font-display text-2xl text-ink">{String(i + 1).padStart(2, "0")}</span>
+          ).map((t) => (
+            <li key={t} className="border-t border-line pt-4 text-sm leading-relaxed text-ink-soft">
               {t}
             </li>
           ))}

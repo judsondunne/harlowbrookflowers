@@ -20,7 +20,7 @@ export function LegalPage({
     <div className="container-page grid gap-12 pt-14 pb-24 sm:pt-20 lg:grid-cols-12">
       <header className="lg:col-span-4">
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h1 className="t-h1 mt-5 text-[clamp(2.4rem,4.2vw,3.5rem)]">{title}</h1>
+        <h1 className="t-h1 mt-3 text-[clamp(2.4rem,4.2vw,3.5rem)]">{title}</h1>
         <p className="mt-4 text-sm text-muted">Draft dated {updated}</p>
         <aside className="mt-8 rounded-sm bg-butter/60 p-5 text-sm leading-relaxed" aria-label="Draft notice">
           <p className="flex items-center gap-2 font-semibold">

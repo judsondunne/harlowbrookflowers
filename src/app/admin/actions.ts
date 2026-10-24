@@ -324,6 +324,17 @@ export async function setMessageStatusAction(formData: FormData) {
     .where(inArray(schema.contactMessages.id, ids));
 }
 
+export async function setWholesaleStatusAction(formData: FormData) {
+  await requireAdmin();
+  const status = String(formData.get("status"));
+  if (!["new", "replied", "archived"].includes(status)) return;
+  const ids = formData.getAll("id").map(String);
+  await db
+    .update(schema.wholesaleInquiries)
+    .set({ status: status as "new" | "replied" | "archived" })
+    .where(inArray(schema.wholesaleInquiries.id, ids));
+}
+
 /* ─── Settings ─────────────────────────────────────────────────────── */
 
 export async function saveSettingsAction(_prev: AdminFormState, formData: FormData): Promise<AdminFormState> {

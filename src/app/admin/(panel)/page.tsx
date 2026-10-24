@@ -30,7 +30,7 @@ async function Dashboard() {
   const mode = paymentMode();
   const paidStatuses = ["paid", "ready", "picked_up"] as const;
 
-  const [windows, [sales], [demoSales], [subs], [msgs], attention, recent] = await Promise.all([
+  const [windows, [sales], [demoSales], [subs], [msgs], [trade], attention, recent] = await Promise.all([
     getUpcomingWindows(db, { now, cutoffHours: settings.orderCutoffHours, includeClosed: true, limit: 8 }),
     db
       .select({ n: sql<number>`count(*)`, total: sql<number>`coalesce(sum(${schema.orders.totalCents}),0)` })
@@ -42,6 +42,7 @@ async function Dashboard() {
       .where(and(inArray(schema.orders.status, [...paidStatuses]), eq(schema.orders.isDemo, true))),
     db.select({ n: sql<number>`count(*)` }).from(schema.giftSubscriptions).where(eq(schema.giftSubscriptions.status, "active")),
     db.select({ n: sql<number>`count(*)` }).from(schema.contactMessages).where(eq(schema.contactMessages.status, "new")),
+    db.select({ n: sql<number>`count(*)` }).from(schema.wholesaleInquiries).where(eq(schema.wholesaleInquiries.status, "new")),
     db.select().from(schema.orders).where(eq(schema.orders.needsAttention, true)).orderBy(desc(schema.orders.createdAt)).limit(5),
     db
       .select()
@@ -82,7 +83,17 @@ async function Dashboard() {
         <Stat label="Sales (paid orders)" value={formatMoney(Number(sales.total))} hint={`${sales.n} orders${Number(demoSales.n) ? ` · plus ${demoSales.n} demo` : ""}`} />
         <Stat label="Next pickup" value={windows[0] ? formatDateShort(windows[0].date) : "—"} hint={windows[0] ? `${windows[0].reserved} of ${windows[0].capacity} bouquets booked` : "No upcoming days"} />
         <Stat label="Active gift subscriptions" value={subs.n} />
-        <Stat label="New messages" value={msgs.n} hint={<Link href="/admin/messages" className="underline">Open inbox</Link>} />
+        <Stat
+          label="New messages"
+          value={msgs.n}
+          hint={
+            <>
+              <Link href="/admin/messages" className="underline">Open inbox</Link>
+              {" · "}
+              <Link href="/admin/wholesale" className="underline">{trade.n} new wholesale</Link>
+            </>
+          }
+        />
       </div>
 
       <div className="mt-8 grid gap-6 xl:grid-cols-3">

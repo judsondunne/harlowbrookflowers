@@ -6,15 +6,8 @@ export const homeContent = {
   hero: {
     heading: "Flowers from our garden, for your table.",
     body: "Seasonal bouquets grown and picked by hand in Hartland, Vermont, ready for you to collect at the farm. Or give someone a whole season of them.",
-    trust: "Grown in Hartland · Local pickup",
+    note: "Grown in Hartland, Vermont. Collected at the farm, never shipped.",
   },
-  features: [
-    { icon: "sprout", title: "Grown in Hartland", text: "Field-grown in Vermont's Upper Valley" },
-    { icon: "scissors", title: "Picked for pickup day", text: "Cut close to pickup, never shipped" },
-    { icon: "hand", title: "Arranged by hand", text: "Every bouquet is one of a kind" },
-    { icon: "gift", title: "Give a season", text: "Prepaid monthly bouquets" },
-    { icon: "calendar", title: "Simple pickup", text: "Choose your day at checkout" },
-  ],
   shop: {
     title: "Shop the garden",
     intro:
@@ -22,7 +15,7 @@ export const homeContent = {
   },
   story: {
     eyebrow: "From the garden",
-    title: "Grown slowly. Given joyfully.",
+    title: "Grown slowly, given joyfully.",
     paragraphs: [
       "Harlow Brook Flowers is a small family flower farm in Hartland, Vermont. Sarah Stewart Taylor grows the flowers in her own garden on the farm and picks them by hand.",
       "You may know her bouquets from local farmers markets. Now you can order ahead, choose a pickup day, and collect your flowers at the farm.",
@@ -31,38 +24,40 @@ export const homeContent = {
   subscriptions: {
     eyebrow: "Flower subscriptions",
     title: "Give a season, not just a bouquet.",
-    body: "One thoughtful gift, paid for once, that arrives again and again. Your recipient collects a Garden Bouquet in Hartland each month of the growing season.",
-    steps: [
-      { title: "Choose a plan", text: "Three months or the whole season." },
-      { title: "Write a note", text: "We include it with the gift." },
-      { title: "Pay once", text: "No renewals, no accounts." },
-      { title: "Flowers each month", text: "Collected fresh in Hartland." },
+    body: "One gift, paid for once, that keeps arriving. Each month of the growing season, the person you love collects a fresh Garden Bouquet at the farm in Hartland.",
+    // Who it's for: the emotional case for the gift, in place of a process diagram.
+    forWhom: [
+      "For your mother, who taught you the names of flowers.",
+      "For a friend who has had a long year.",
+      "For yourself, once a month until the frost.",
     ],
-  },
-  pickup: {
-    eyebrow: "How it works",
-    title: "Ordered ahead, picked for you.",
-    steps: [
-      { title: "Choose your flowers", text: "Pick a bouquet size, or a subscription to give as a gift." },
-      { title: "Pick a pickup day", text: "Choose from the open days and times. Each one has a limited number of bouquets." },
-      { title: "Pay securely", text: "Guest checkout through Stripe. You'll get a confirmation with directions." },
-      { title: "Collect in Hartland", text: "Your bouquet is picked for your day and waiting for you at the farm." },
-    ],
+    note: "One payment, a printable gift card, and no renewals.",
   },
   season: {
     eyebrow: "Seasonal by nature",
     title: "Every bouquet is a little different.",
+    body: "Everything is grown outdoors in Hartland, so the garden changes all summer long, from the first peonies to the last dahlias before frost. Each bouquet is gathered from whatever is at its best that week, which is exactly what makes it worth waiting for.",
     // A typical Vermont cut-flower season. Sarah to confirm against what she actually grows.
     months: [
-      { label: "Early summer", flowers: "Peonies, sweet peas, foxglove, early roses" },
-      { label: "High summer", flowers: "Zinnias, snapdragons, cosmos, scabiosa" },
-      { label: "Late summer", flowers: "Dahlias, sunflowers, rudbeckia, celosia" },
-      { label: "Autumn", flowers: "Late dahlias, asters, grasses and seed heads" },
+      { label: "Early summer", flowers: "Peonies, sweet peas, foxglove, early roses", image: "/images/photos/wildflowers-blue-bucket.webp" },
+      { label: "High summer", flowers: "Zinnias, snapdragons, cosmos, scabiosa", image: "/images/photos/zinnias-in-hand.webp" },
+      { label: "Late summer", flowers: "Dahlias, sunflowers, rudbeckia, celosia", image: "/images/photos/dahlia-basket.webp" },
+      { label: "Autumn", flowers: "Late dahlias, asters, grasses and seed heads", image: "/images/photos/dahlias-white-bucket.webp" },
     ],
+    footnote: "A typical Vermont season. What's in your bouquet depends on the weather and the week.",
+  },
+  wholesale: {
+    eyebrow: "Wholesale & markets",
+    title: "Fresh from our farm, beautiful in your shop.",
+    body: "Harlow Brook also grows for local businesses: farm stands, shops, cafés and market stalls that want something a little different from the wholesale cooler. Tell Sarah what you have in mind.",
   },
   author: {
     eyebrow: "The grower",
-    title: "Sarah Stewart Taylor",
-    body: "Sarah is a mystery novelist, the author of the Maggie D'arcy series and Agony Hill, a historical mystery set in rural Vermont. She writes, and grows these flowers, on the family farm in Hartland.",
+    title: "Meet Sarah",
+    paragraphs: [
+      "Sarah Stewart Taylor grows every bouquet in the garden of her family's farm in Hartland, and picks the flowers by hand for each pickup day.",
+      "When she isn't in the garden, she's at her desk. Sarah is a mystery novelist, the author of the Maggie D'arcy series and Agony Hill, a historical mystery set in rural Vermont.",
+    ],
+    caption: "Sarah with Agony Hill, her novel set in 1960s Vermont.",
   },
 };

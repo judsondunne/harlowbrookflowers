@@ -2,14 +2,14 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/format";
 
 const control =
-  "w-full rounded-sm border bg-paper px-4 text-[0.9375rem] text-ink outline-none transition-colors placeholder:text-muted/80 focus:border-ink aria-invalid:border-error";
+  "w-full rounded-[2px] border bg-paper px-4 text-[0.9375rem] text-ink outline-none transition-colors placeholder:text-muted/75 focus:border-ink focus-visible:shadow-[0_0_0_1px_var(--color-ink)] aria-invalid:border-error";
 
 type FieldShell = { label: ReactNode; hint?: ReactNode; error?: string; id: string; optional?: boolean; className?: string };
 
 function Shell({ label, hint, error, id, optional, className, children }: FieldShell & { children: ReactNode }) {
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 flex items-baseline justify-between text-sm font-semibold">
+      <label htmlFor={id} className="mb-1.5 flex items-baseline justify-between gap-3 text-sm font-medium">
         <span>{label}</span>
         {optional && <span className="text-xs font-normal text-muted">Optional</span>}
       </label>

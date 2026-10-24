@@ -38,7 +38,7 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
             />
           </div>
         ))}
-        {current.provisional && <SampleTag label="Sample photograph · yours will vary" />}
+        {current.provisional && <SampleTag label="Sample photo · yours will vary" />}
       </div>
       {images.length > 1 && (
         <ul className="mt-3 flex gap-3" aria-label={`${name} photos`}>

@@ -5,7 +5,6 @@ import type { Cart } from "@/domain/cart";
 import { CartLines } from "./cart-lines";
 import { formatMoney } from "@/lib/format";
 import { formatDateLong, formatTimeRange } from "@/lib/time";
-import { IconCalendar } from "@/components/ui/icons";
 
 /** Totals block shared by cart and checkout. */
 export function Totals({ snapshot }: { snapshot: CartSnapshot | null }) {
@@ -38,13 +37,12 @@ export function OrderSummary({ cart, snapshot }: { cart: Cart; snapshot: CartSna
   const pickup = snapshot?.quote.pickup;
   return (
     <div className="bg-paper p-6 ring-1 ring-line sm:p-8">
-      <h2 className="font-display text-2xl">Your order</h2>
+      <h2 className="font-display text-2xl font-light">Your order</h2>
       <CartLines cart={cart} snapshot={snapshot} dense />
       {pickup && (
-        <p className="mt-2 flex items-start gap-3 border-t border-line pt-5 text-sm">
-          <IconCalendar size={20} className="mt-0.5 shrink-0 text-olive" />
+        <p className="mt-2 border-t border-line pt-5 text-sm">
           <span>
-            <span className="block font-semibold">Pickup {formatDateLong(pickup.date)}</span>
+            <span className="block font-medium">Pickup {formatDateLong(pickup.date)}</span>
             <span className="text-muted">
               {formatTimeRange(pickup.startTime, pickup.endTime)} · {snapshot?.pickupLocation}
             </span>

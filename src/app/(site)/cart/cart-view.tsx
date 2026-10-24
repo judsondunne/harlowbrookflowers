@@ -7,7 +7,6 @@ import { CartLines } from "@/components/cart/cart-lines";
 import { PickupPicker } from "@/components/cart/pickup-picker";
 import { Totals } from "@/components/cart/order-summary";
 import { ButtonLink, buttonClass } from "@/components/ui/button";
-import { IconLock, IconPin } from "@/components/ui/icons";
 import { cn } from "@/lib/format";
 
 export function CartView() {
@@ -44,9 +43,7 @@ export function CartView() {
               <h2 id="pickup-h" className="t-h3">
                 Choose a pickup day
               </h2>
-              <p className="flex items-center gap-1.5 text-sm text-muted">
-                <IconPin size={16} /> {snapshot.pickupLocation}
-              </p>
+              <p className="text-sm text-muted">{snapshot.pickupLocation}</p>
             </div>
             <PickupPicker
               windows={snapshot.windows}
@@ -86,10 +83,8 @@ export function CartView() {
           >
             {quote?.needsPickup && !cart.pickupWindowId ? "Choose a pickup day to continue" : "Continue to checkout"}
           </Link>
-          <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted">
-            <IconLock size={14} /> Secure payment by Stripe · No account needed
-          </p>
-          <Link href="/shop" className="mt-6 block text-center text-sm font-medium underline-offset-4 hover:underline">
+          <p className="mt-4 text-center text-xs text-muted">Secure payment by Stripe · No account needed</p>
+          <Link href="/shop" className="mt-6 block text-center text-sm font-medium underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
             Keep shopping
           </Link>
         </div>

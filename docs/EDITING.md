@@ -77,11 +77,24 @@ file names in `public/images/photos/`, or ask your web person. [ASSET_MANIFEST.m
 - **Messages:** contact-form notes. Reply by email, then mark them replied or archive them.
 - **Email list:** people who asked to hear when pickups open, with the exact consent they gave. Export it as CSV for
   your newsletter tool. Only email people on this list.
+- **Wholesale:** inquiries from shops, farm stands, markets and cafés sent through the Wholesale & Markets page, with
+  their business type, town, rough quantity and start date. Reply by email, then mark them replied or archive them.
+  If a notification email is set in Settings, each inquiry is also emailed to you.
+
+## Website words
+
+Most wording lives in plain files, so it can change without touching the design:
+
+- `src/content/home.ts`: homepage copy, including the "who it's for" gift lines and the season photos and flowers.
+- `src/content/wholesale.ts`: everything on the Wholesale & Markets page, including the possible offerings and the
+  buyer questions. Remove any offering you don't want to take on; nothing there is a promise until you're happy.
+- `src/content/faq.ts`: the FAQ, which also feeds the gifting and wholesale questions.
+- The **season note** in Settings replaces the homepage's season paragraph as soon as you write your own.
 
 ## Settings
 
 - **Online ordering is open:** turn this off to pause checkout (the site stays up and explains why).
 - **Pickup location (public)** and **pickup instructions (private, sent only after purchase):** write the address,
   parking and where to find the flowers in the private field. It never appears on the public site.
-- **Announcement bar**, **season note**, **notification email**, **order cutoff hours**, and **sales tax rate**.
+- **Announcement bar** (blank hides it), **season note**, **notification email**, **order cutoff hours**, and **sales tax rate**.
 - **Catalog approved:** switch on once products, prices and photos are final. Live payments require it.

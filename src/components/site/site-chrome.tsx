@@ -3,7 +3,7 @@ import { CartProvider } from "@/components/cart/cart-provider";
 import { LazyCartDrawer } from "@/components/cart/lazy-cart-drawer";
 import { Header } from "./header";
 import { Footer } from "./footer";
-import { PreviewBanner } from "./preview-banner";
+import { Announcement } from "./announcement";
 
 /** Customer-facing frame shared by every storefront page, the 404 and error pages. */
 export function SiteChrome({ children }: { children: ReactNode }) {
@@ -11,11 +11,11 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     <CartProvider>
       <a
         href="#main"
-        className="sr-only z-50 rounded-full bg-ink px-4 py-2 text-sm text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        className="sr-only z-50 bg-ink px-4 py-2 text-sm text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
       >
         Skip to content
       </a>
-      <PreviewBanner />
+      <Announcement />
       <Header />
       <main id="main" className="min-h-[60vh]">
         {children}

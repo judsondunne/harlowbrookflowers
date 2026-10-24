@@ -12,7 +12,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function CreditsPage() {
   const seen = new Set<string>();
-  const unique = assetManifest.filter((a) => (seen.has(a.source) ? false : (seen.add(a.source), true)));
+  const unique = assetManifest.filter((a) => a.source.includes("unsplash.com") && (seen.has(a.source) ? false : (seen.add(a.source), true)));
   return (
     <>
       <PageIntro eyebrow="Credits" title="Photography">

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/forms/contact-form";
-import { Photo } from "@/components/home/sections";
+import { Photo } from "@/components/ui/photo";
 import { Eyebrow } from "@/components/ui/typography";
-import { IconMail, IconPin } from "@/components/ui/icons";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { disposableStorage } from "@/server/config";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact Harlow Brook Flowers · Hartland, Vermont",
@@ -27,24 +27,22 @@ export default function ContactPage() {
       <div className="container-page grid gap-14 pt-14 pb-24 sm:pt-20 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <Eyebrow>Contact</Eyebrow>
-          <h1 className="t-h1 mt-5">Write to the farm.</h1>
+          <h1 className="t-h1 mt-3">Write to the farm.</h1>
           <p className="t-lead mt-6">
             Questions about an order or pickup, a gift, or flowers for something special? Sarah reads every message herself.
           </p>
           <ul className="mt-10 space-y-5 border-t border-line pt-8 text-[0.9375rem]">
-            <li className="flex items-start gap-3">
-              <IconMail size={20} className="mt-0.5 text-olive" />
+            <li>
               <span>
-                <span className="block font-semibold">Email</span>
+                <span className="block font-display text-[1.1875rem]">Email</span>
                 <a href={`mailto:${site.email}`} className="text-ink-soft underline underline-offset-4 hover:text-ink">
                   {site.email}
                 </a>
               </span>
             </li>
-            <li className="flex items-start gap-3">
-              <IconPin size={20} className="mt-0.5 text-olive" />
+            <li>
               <span>
-                <span className="block font-semibold">
+                <span className="block font-display text-[1.1875rem]">
                   {site.location.locality}, {site.location.regionName}
                 </span>
                 <span className="text-ink-soft">
@@ -54,7 +52,11 @@ export default function ContactPage() {
             </li>
           </ul>
           <p className="mt-8 text-sm text-muted">
-            Many answers are already in the{" "}
+            Asking about flowers for a shop, café or market?{" "}
+            <Link href="/wholesale#inquiry" className="underline underline-offset-4">
+              Use the wholesale inquiry
+            </Link>
+            . Many other answers are already in the{" "}
             <Link href="/faq" className="underline underline-offset-4">
               FAQ
             </Link>
@@ -63,7 +65,7 @@ export default function ContactPage() {
           <Photo src="/images/photos/farmhouse-pond.webp" className="mt-12 hidden aspect-[4/3] lg:block" sizes="40vw" />
         </div>
         <div className="lg:col-span-6 lg:col-start-7">
-          <ContactForm />
+          <ContactForm previewNotice={disposableStorage()} />
         </div>
       </div>
     </>

@@ -25,6 +25,16 @@ npm run db:setup    # migrate + seed demo catalog, demo pickup days, default set
 
 Schema changes: edit `src/server/db/schema.ts`, run `npm run db:generate`, commit the new file in `drizzle/`.
 
+**Disposable preview on Vercel (no hosted database yet):** if `DATABASE_URL` is not set in Vercel, the build command
+in `vercel.json` migrates and seeds a SQLite file with the demo catalog, and that file ships with the deployment.
+Each server instance copies it to `/tmp` and works on the copy, so browsing, the cart and the gift builder all work,
+but **nothing written persists** (contact messages, wholesale inquiries, sign-ups, admin edits), and separate
+instances don't see each other's writes. For that reason checkout stays closed on such a preview ("Online ordering
+opens soon"): don't set `ENABLE_DEMO_CHECKOUT` there, because an order made on one instance can't be found by the
+next. The contact, wholesale and newsletter forms say plainly that the preview doesn't keep messages. Test the full
+checkout locally (`npm run dev`), or connect Turso first. Once `DATABASE_URL` points at Turso, the seeding step is skipped and only migrations run.
+Previews on `*.vercel.app` are also kept out of search engines automatically (see LOCAL_SEO.md).
+
 ## 2. Admin login
 
 `npm run db:seed` creates the first admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD` (min. 12 characters). To add or reset
