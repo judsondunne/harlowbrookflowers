@@ -20,7 +20,7 @@ what stands between the preview and opening the shop.
 | Contact email | `hello@harlowbrookflowers.com` (placeholder). | Set `NEXT_PUBLIC_CONTACT_EMAIL` to the real inbox. |
 | Email delivery | Saved to the admin outbox only. | Connect Resend (SETUP.md §4); set the notification email. |
 | Photo uploads in production | Local disk only. | Add Vercel Blob (SETUP.md §5). |
-| Database | Local SQLite file. | Turso (SETUP.md §1). |
+| Database | Local SQLite file; the Vercel preview uses a disposable copy until a hosted database is connected. | One command: `vercel integration add tursocloud/database`, then redeploy (SETUP.md §1). |
 
 ## Business decisions Sarah needs to make
 

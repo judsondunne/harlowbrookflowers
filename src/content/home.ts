@@ -20,6 +20,7 @@ export const homeContent = {
       "Harlow Brook Flowers is a small family flower farm in Hartland, Vermont. Sarah Stewart Taylor grows the flowers in her own garden on the farm and picks them by hand.",
       "You may know her bouquets from local farmers markets. Now you can order ahead, choose a pickup day, and collect your flowers at the farm.",
     ],
+    captions: ["Picked by hand, the week you collect it", "Dahlias, late summer"],
   },
   subscriptions: {
     eyebrow: "Flower subscriptions",

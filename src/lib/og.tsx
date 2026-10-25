@@ -69,7 +69,7 @@ export async function shareCard(input: { kicker?: string; title: string; subtitl
     (
       <div style={{ display: "flex", width: "100%", height: "100%", background: C.cream, color: C.ink }}>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 640, padding: "60px 0 56px 72px" }}>
-          <div style={{ display: "flex", fontFamily: "Gloock", fontSize: 38, letterSpacing: -1 }}>Harlow Brook</div>
+          <div style={{ display: "flex", fontFamily: "Gloock", fontSize: 36, letterSpacing: -1 }}>Harlow Brook Flowers</div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {input.kicker && (
               <div style={{ display: "flex", fontFamily: "Hanken", fontWeight: 500, fontSize: 24, color: C.muted, marginBottom: 18 }}>
@@ -163,7 +163,7 @@ async function giftVisual(g: GiftVisual) {
         }}
       >
         <div style={{ position: "absolute", left: 12, top: 12, right: 12, bottom: 12, border: `1px solid ${d.rule}` }} />
-        <div style={{ display: "flex", fontFamily: "Gloock", fontSize: 26, letterSpacing: -0.5 }}>Harlow Brook</div>
+        <div style={{ display: "flex", fontFamily: "Gloock", fontSize: 23, letterSpacing: -0.5 }}>Harlow Brook Flowers</div>
         <div style={{ display: "flex", fontFamily: "Newsreader", fontWeight: 500, fontSize: 34, marginTop: 26, lineHeight: 1.1 }}>{g.planName}</div>
         <div style={{ display: "flex", fontFamily: "Newsreader", fontWeight: 500, fontSize: 30, marginTop: 30 }}>{`For ${g.recipient}`}</div>
         {message && (
@@ -177,17 +177,17 @@ async function giftVisual(g: GiftVisual) {
   );
 }
 
-/** The homepage card: the giant wordmark behind a bouquet on its butter circle, as in the hero. */
+/** The homepage card: the full wordmark behind a bouquet on its butter circle, as in the hero. */
 async function heroCard(bouquet: string, host: string) {
   return new ImageResponse(
     (
       <div style={{ display: "flex", position: "relative", width: "100%", height: "100%", background: C.cream, color: C.ink }}>
-        <div style={{ position: "absolute", left: 0, right: 0, top: 54, display: "flex", justifyContent: "center", fontFamily: "Gloock", fontSize: 172, letterSpacing: -6, whiteSpace: "nowrap" }}>
-          Harlow Brook
+        <div style={{ position: "absolute", left: 0, right: 0, top: 58, display: "flex", justifyContent: "center", fontFamily: "Gloock", fontSize: 113, letterSpacing: -4, whiteSpace: "nowrap" }}>
+          Harlow Brook Flowers
         </div>
-        <div style={{ position: "absolute", left: 440, top: 140, width: 320, height: 320, borderRadius: 999, background: C.butter }} />
+        <div style={{ position: "absolute", left: 445, top: 168, width: 310, height: 310, borderRadius: 999, background: C.butter }} />
         {/* eslint-disable-next-line @next/next/no-img-element -- Satori draws plain <img> */}
-        <img src={bouquet} alt="" style={{ position: "absolute", left: 410, top: 112, width: 380, height: 420, objectFit: "contain", objectPosition: "bottom" }} />
+        <img src={bouquet} alt="" style={{ position: "absolute", left: 420, top: 140, width: 360, height: 400, objectFit: "contain", objectPosition: "bottom" }} />
         <div style={{ position: "absolute", left: 72, right: 72, bottom: 48, display: "flex", justifyContent: "space-between", fontFamily: "Hanken", fontWeight: 500, fontSize: 24, color: C.soft }}>
           <div style={{ display: "flex" }}>Seasonal flowers from a family farm in Hartland, Vermont</div>
           <div style={{ display: "flex", color: C.muted }}>{host}</div>

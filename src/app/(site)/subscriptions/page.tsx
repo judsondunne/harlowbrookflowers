@@ -18,9 +18,10 @@ import { formatPrice, numberWord } from "@/lib/format";
 import { formatMonth } from "@/lib/time";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Flower Subscription Gifts · A Season of Vermont Flowers",
+  title: "Flower Subscription in Vermont · A Season of Fresh Flowers",
+  absoluteTitle: true,
   description:
-    "Give a prepaid flower subscription from Harlow Brook Flowers: a fresh Garden Bouquet each month of the Vermont growing season, collected in Hartland. One payment, a printable gift card, no renewals.",
+    "A flower subscription gift from a Vermont flower farm: a fresh bouquet each month of the growing season, collected in Hartland. Paid once, with a printable card.",
   path: "/subscriptions",
 });
 

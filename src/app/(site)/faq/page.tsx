@@ -7,9 +7,10 @@ import { faqGroups } from "@/content/faq";
 import { breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Questions · Pickup, Seasonal Bouquets & Gift Subscriptions",
+  title: "Flower Pickup & Bouquet Questions · Harlow Brook Flowers",
+  absoluteTitle: true,
   description:
-    "Answers about local pickup in Hartland, VT, seasonal bouquet variety, gift subscriptions, changes, cancellations and payment at Harlow Brook Flowers.",
+    "Answers about local flower pickup in Hartland, VT, what's in each seasonal bouquet, gift subscriptions, changes, cancellations and payment.",
   path: "/faq",
 });
 

@@ -12,10 +12,10 @@ import { site } from "@/lib/site";
 import { DEFAULT_SETTINGS } from "@/domain/settings";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About Harlow Brook Flowers · A Family Flower Farm in Hartland, VT",
+  title: "Our Flower Farm in Hartland, Vermont · Harlow Brook Flowers",
   absoluteTitle: true,
   description:
-    "Harlow Brook Flowers is a small family flower farm in Hartland, Vermont, grown by mystery novelist Sarah Stewart Taylor. How we grow, the Vermont season, and visiting on a pickup day.",
+    "Harlow Brook Flowers is a small family flower farm in Hartland, Vermont, grown by mystery novelist Sarah Stewart Taylor. How we grow, the season, and visiting.",
   path: "/about",
 });
 
@@ -303,6 +303,14 @@ export default async function AboutPage() {
                 className="text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink"
               >
                 See wholesale &amp; markets
+              </Link>
+              .
+             Coming from further afield?{" "}
+              <Link
+                href="/guides/fresh-cut-flowers-upper-valley"
+                className="text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink"
+              >
+                Driving times from around the Upper Valley
               </Link>
               .
             </p>

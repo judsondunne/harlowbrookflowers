@@ -1,6 +1,7 @@
 import "server-only";
 import type { StoreSettings } from "@/domain/settings";
 import { site } from "@/lib/site";
+import { databaseEnv } from "./db/env";
 
 /**
  * demo        – no Stripe key. Orders are recorded and clearly labelled as demonstrations; no money moves.
@@ -15,9 +16,14 @@ export function paymentMode(): PaymentMode {
   return key.startsWith("sk_live_") || key.startsWith("rk_live_") ? "stripe_live" : "stripe_test";
 }
 
-/** Demo checkout runs locally by default, and in a deployed preview only when explicitly enabled. */
+/**
+ * Demo checkout (no payment taken, orders marked as demos) runs locally, when ENABLE_DEMO_CHECKOUT=true, and on a
+ * pre-launch *.vercel.app preview once it has a real database, so the whole journey can be tried there. On the
+ * real domain it stays off unless explicitly enabled.
+ */
 export function demoCheckoutEnabled() {
-  return process.env.NODE_ENV !== "production" || process.env.ENABLE_DEMO_CHECKOUT === "true";
+  if (process.env.NODE_ENV !== "production" || process.env.ENABLE_DEMO_CHECKOUT === "true") return true;
+  return databaseEnv().hosted && !site.indexable;
 }
 
 export type CheckoutGate = { open: true; mode: PaymentMode } | { open: false; mode: PaymentMode; reason: string };
@@ -45,5 +51,5 @@ export function siteOrigin() {
 
 /** True on a Vercel preview running without a hosted database (see db/client.ts): writes don't persist. */
 export function disposableStorage() {
-  return !!process.env.VERCEL && (process.env.DATABASE_URL ?? "file:").startsWith("file:");
+  return !!process.env.VERCEL && !databaseEnv().hosted;
 }

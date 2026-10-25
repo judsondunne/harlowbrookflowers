@@ -32,7 +32,7 @@ export function Footer() {
 
       <div className="container-page grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-4">
-          <p className="font-wordmark text-5xl leading-none tracking-[-0.03em]">Harlow Brook</p>
+          <p className="font-wordmark text-[2.75rem] leading-[0.95] tracking-[-0.03em]">Harlow Brook Flowers</p>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/65">
             Seasonal flowers grown and picked by hand on a family farm in {site.location.locality},{" "}
             {site.location.regionName}.

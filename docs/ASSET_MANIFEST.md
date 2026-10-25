@@ -19,14 +19,14 @@ Bouquet cutouts (`/images/bouquets/*`) were made by removing the background from
 | `/images/photos/season-of-flowers-styled.webp` | 2000×1367 | Season of Flowers gallery | Natalie Kinnear | [Unsplash](https://unsplash.com/photos/wxXLoKVkgWY) | Yes |
 | `/images/photos/six-months-of-flowers-styled.webp` | 1800×2400 | Six Months gallery | Evelien Van Den Brink | [Unsplash](https://unsplash.com/photos/BRk56DTxdP4) | Yes |
 | `/images/photos/dahlia-bouquet-in-hand.webp` | 1600×2400 | Homepage story | Jack Swords | [Unsplash](https://unsplash.com/photos/BQtphmFrst4) | Yes |
-| `/images/photos/dahlia-rows.webp` | 2000×1333 | Homepage story inset; About (the farm) | Rose Bahmani | [Unsplash](https://unsplash.com/photos/wOOPqfJ4Fl4) | Yes |
+| `/images/photos/dahlia-rows.webp` | 2000×1333 | Homepage story; About (the farm) | Rose Bahmani | [Unsplash](https://unsplash.com/photos/wOOPqfJ4Fl4) | Yes |
 | `/images/photos/peach-dahlias.webp` | 1600×2400 | Not currently placed (spare) | Anita Austvika | [Unsplash](https://unsplash.com/photos/Y9vwEr_i4NE) | Yes |
 | `/images/photos/dahlia-basket.webp` | 1807×2400 | Homepage season strip (late summer); About gallery | Christopher Lowe | [Unsplash](https://unsplash.com/photos/ih7powhVe7M) | Yes |
 | `/images/photos/zinnias-in-hand.webp` | 1800×2400 | Homepage season strip (high summer); About gallery | Megan Waksmundzki | [Unsplash](https://unsplash.com/photos/bHkIUavTIEo) | Yes |
-| `/images/photos/dahlia-harvest-flatlay.webp` | 2000×1519 | Wholesale: why farm-grown | Lynnelle Cleveland | [Unsplash](https://unsplash.com/photos/KSu972ZVzk4) | Yes |
+| `/images/photos/dahlia-harvest-flatlay.webp` | 2000×1519 | Wholesale: why farm-grown; Guide: Vermont flower season | Lynnelle Cleveland | [Unsplash](https://unsplash.com/photos/KSu972ZVzk4) | Yes |
 | `/images/photos/autumn-farm.webp` | 2000×1114 | Not currently placed (spare) | LXS Photography | [Unsplash](https://unsplash.com/photos/1PnkD5YV6Sw) | Yes |
 | `/images/photos/mountain-valley.webp` | 2000×1333 | About: visiting | Alex Moliski | [Unsplash](https://unsplash.com/photos/xmB63hJPTIo) | Yes |
-| `/images/photos/valley-village.webp` | 2000×1331 | Not currently placed (spare) | Venti Views | [Unsplash](https://unsplash.com/photos/9uWkID2TCIE) | Yes |
+| `/images/photos/valley-village.webp` | 2000×1331 | Guide: fresh cut flowers in the Upper Valley | Venti Views | [Unsplash](https://unsplash.com/photos/9uWkID2TCIE) | Yes |
 | `/images/photos/rudbeckia-fence.webp` | 2000×1500 | Not currently placed (spare) | J K | [Unsplash](https://unsplash.com/photos/Qayn6sbwKBk) | Yes |
 | `/images/photos/flowers-with-open-book.webp` | 2000×1600 | Not currently placed (spare) | Sixteen Miles Out | [Unsplash](https://unsplash.com/photos/QMbLS3j-Si0) | Yes |
 | `/images/photos/flowers-on-book.webp` | 2000×1333 | About: the writer | Sixteen Miles Out | [Unsplash](https://unsplash.com/photos/izbz9y9j6ME) | Yes |
@@ -40,9 +40,9 @@ Bouquet cutouts (`/images/bouquets/*`) were made by removing the background from
 | `/images/photos/dahlias-white-bucket.webp` | 1600×2400 | Homepage season strip (autumn); draft product | Eileen Kummer | [Unsplash](https://unsplash.com/photos/Ix5Tc8Jl4RA) | Yes |
 | `/images/photos/buckets-of-flowers.webp` | 2000×1500 | Homepage wholesale band; About gallery; Six Months gallery | Roxanne Bohman | [Unsplash](https://unsplash.com/photos/k9CBKpuVjY0) | Yes |
 | `/images/photos/zinnia-jug.webp` | 1600×2400 | Gift flowers; Wholesale: who we work with | Marites Allen | [Unsplash](https://unsplash.com/photos/rumoef7nbks) | Yes |
-| `/images/photos/zinnias-mason-jar.webp` | 1600×2400 | Subscriptions hero; How it works | Rakitha Perera | [Unsplash](https://unsplash.com/photos/hhuNFtcrCtY) | Yes |
+| `/images/photos/zinnias-mason-jar.webp` | 1600×2400 | Subscriptions hero; How it works; Guide: keeping cut flowers fresh | Rakitha Perera | [Unsplash](https://unsplash.com/photos/hhuNFtcrCtY) | Yes |
 | `/images/photos/sarah-stewart-taylor.webp` | 1600×2000 | Homepage: Meet Sarah; About intro | Courtesy of Sarah Stewart Taylor | Supplied by the client | No |
 
-Other assets: `public/og/harlow-brook.jpg` (Open Graph image composed from the Garden Bouquet cutout), `src/app/icon.svg` (original sprig mark). Fonts (Gloock, Newsreader, Hanken Grotesk) are SIL Open Font License, served by `next/font`. Link-preview cards use WOFF copies of the same fonts and PNG/JPEG copies of a few photos in `src/assets/og` (the card renderer can't read WebP).
+Other assets: `public/logo.png` (square wordmark logo for listings and structured data), `public/og/harlow-brook.jpg` (earlier static share image, kept for old links), `src/app/icon.svg` (original sprig mark). Fonts (Gloock, Newsreader, Hanken Grotesk) are SIL Open Font License, served by `next/font`. Link-preview cards use WOFF copies of the same fonts and PNG/JPEG copies of a few photos in `src/assets/og` (the card renderer can't read WebP).
 
 Sarah's portrait (`sarah-stewart-taylor.webp`) is the photo of her holding *Agony Hill* supplied with the original brief and used at the site owner's request. It was cropped to 4:5 from the 4032×3024 original. **Confirm the photographer credit before launch** and add it to the caption or the credits page if one is wanted.

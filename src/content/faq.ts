@@ -52,6 +52,10 @@ export const faqGroups: FaqGroup[] = [
         q: "When is the season?",
         a: "Our flowers grow outdoors in Vermont, so the season runs from early summer until the first hard frost. Pickup days are posted through the season as the garden comes into bloom.",
       },
+      {
+        q: "Where can I get fresh cut flowers near Woodstock, Hanover or White River Junction?",
+        a: "Harlow Brook is in Hartland, Vermont, between Windsor and White River Junction, about 15 to 25 minutes from most of the Upper Valley. Order online and collect your bouquet at the farm on the pickup day you choose.",
+      },
     ],
   },
   {
@@ -99,6 +103,10 @@ export const faqGroups: FaqGroup[] = [
       {
         q: "Are there any extra fees?",
         a: "No. The price you see is the price you pay, and pickup is free. If sales tax applies, it's shown before you pay.",
+      },
+      {
+        q: "Do you sell flowers to shops, cafés and markets?",
+        a: "Yes. We grow for local businesses too: wrapped bouquets to resell, seasonal bunches and stems by the bucket. Send a wholesale inquiry from our Wholesale & Markets page and Sarah will reply by email.",
       },
     ],
   },

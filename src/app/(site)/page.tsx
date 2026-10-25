@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Hero, type HeroSlide } from "@/components/home/hero";
+import { NextPickup } from "@/components/shop/next-pickup";
 import {
   AuthorNote,
   NewsletterSection,
@@ -16,13 +18,13 @@ import { primaryImage, productAvailability } from "@/domain/catalog";
 import { getListedProducts } from "@/server/catalog";
 import { getSettings } from "@/server/settings";
 import { getFarmToday } from "@/server/today";
-import { localBusinessJsonLd, pageMetadata } from "@/lib/seo";
+import { localBusinessJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Harlow Brook Flowers · Locally Grown Flowers in Hartland, Vermont",
+  title: "Fresh Cut Flowers in Hartland, Vermont · Harlow Brook Flowers",
   absoluteTitle: true,
   description:
-    "Seasonal bouquets grown and hand-picked by Sarah Stewart Taylor in Hartland, Vermont. Order online for local pickup in the Upper Valley, or give a prepaid season of flowers.",
+    "Fresh cut flowers grown and hand-picked on a family farm in Hartland, Vermont. Order seasonal bouquets for pickup in the Upper Valley, or give a flower subscription.",
   path: "/",
 });
 
@@ -53,8 +55,16 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={localBusinessJsonLd()} />
-      <Hero slides={slides} copy={homeContent.hero} />
+      <JsonLd data={[websiteJsonLd(), localBusinessJsonLd(products)]} />
+      <Hero
+        slides={slides}
+        copy={homeContent.hero}
+        pickup={
+          <Suspense fallback={null}>
+            <NextPickup compact />
+          </Suspense>
+        }
+      />
       <ShopSection products={bouquetsBySize} today={today} />
       <StorySection />
       <SubscriptionBand plans={plans} />

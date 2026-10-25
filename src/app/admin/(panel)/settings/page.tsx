@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { desc } from "drizzle-orm";
 import { db, schema } from "@/server/db/client";
+import { databaseEnv } from "@/server/db/env";
 import { requireAdmin } from "@/server/auth";
 import { loadSettings } from "@/server/settings";
 import { paymentMode, siteOrigin } from "@/server/config";
@@ -33,7 +34,7 @@ async function Settings() {
     { name: "Stripe webhook", ok: !!process.env.STRIPE_WEBHOOK_SECRET, detail: `${siteOrigin()}/api/webhooks/stripe` },
     { name: "Email delivery", ok: !!process.env.RESEND_API_KEY, detail: process.env.RESEND_API_KEY ? "Resend" : "Not connected: emails are saved to the outbox below" },
     { name: "Photo storage", ok: !!process.env.BLOB_READ_WRITE_TOKEN, detail: process.env.BLOB_READ_WRITE_TOKEN ? "Vercel Blob" : "Local files (development only)" },
-    { name: "Database", ok: !!process.env.DATABASE_URL?.startsWith("libsql"), detail: process.env.DATABASE_URL?.startsWith("libsql") ? "Hosted libSQL" : "Local SQLite file (development)" },
+    { name: "Database", ok: databaseEnv().hosted, detail: databaseEnv().hosted ? "Hosted libSQL (Turso)" : "Local SQLite file (development or disposable preview)" },
     { name: "Analytics", ok: !!process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, detail: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? "Google Analytics 4" : "Off" },
   ];
   return (

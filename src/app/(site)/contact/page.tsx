@@ -4,14 +4,15 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { Photo } from "@/components/ui/photo";
 import { Eyebrow } from "@/components/ui/typography";
 import { JsonLd } from "@/components/seo/json-ld";
-import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, localBusinessJsonLd, pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { disposableStorage } from "@/server/config";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact Harlow Brook Flowers · Hartland, Vermont",
+  absoluteTitle: true,
   description:
-    "Questions about an order, pickup in Hartland, gift subscriptions or flowers for an event? Send Sarah a note.",
+    "Questions about fresh flowers, an order, pickup in Hartland, a gift subscription or flowers for your business? Write to Sarah at the farm.",
   path: "/contact",
 });
 
@@ -19,17 +20,21 @@ export default function ContactPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Contact", path: "/contact" },
-        ])}
+        data={[
+          localBusinessJsonLd(),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Contact", path: "/contact" },
+          ]),
+        ]}
       />
       <div className="container-page grid gap-14 pt-14 pb-24 sm:pt-20 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <Eyebrow>Contact</Eyebrow>
           <h1 className="t-h1 mt-3">Write to the farm.</h1>
           <p className="t-lead mt-6">
-            Questions about an order or pickup, a gift, or flowers for something special? Sarah reads every message herself.
+            Questions about an order or pickup, a gift, or flowers for something special? Sarah reads every message
+            herself.
           </p>
           <ul className="mt-10 space-y-5 border-t border-line pt-8 text-[0.9375rem]">
             <li>

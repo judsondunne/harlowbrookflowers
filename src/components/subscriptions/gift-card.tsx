@@ -52,7 +52,7 @@ export function GiftCardFace({
           <Image src={image} alt="" fill sizes="176px" className="object-contain object-bottom" />
         </div>
       )}
-      <p className={cn("font-wordmark leading-none tracking-[-0.02em]", lg ? "text-[1.5rem]" : "text-[1.25rem]")}>Harlow Brook</p>
+      <p className={cn("font-wordmark leading-none tracking-[-0.02em]", lg ? "text-[1.375rem]" : "text-[1.125rem]")}>Harlow Brook Flowers</p>
       <p className={cn("mt-6 font-display leading-tight font-medium", lg ? "text-[2.25rem]" : "text-[1.75rem]")}>{planName}</p>
       {detail && <p className={cn("mt-1 text-[0.8125rem]", d.muted)}>{detail}</p>}
       <p className={cn("mt-7 font-display leading-snug font-medium", lg ? "text-[1.75rem]" : "text-[1.375rem]")}>For {recipient}</p>

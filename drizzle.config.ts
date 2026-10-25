@@ -1,11 +1,14 @@
 import { defineConfig } from "drizzle-kit";
+import { databaseEnv } from "./src/server/db/env";
+
+const { url, authToken } = databaseEnv();
 
 export default defineConfig({
   schema: "./src/server/db/schema.ts",
   out: "./drizzle",
   dialect: "turso",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "file:./data/harlow-brook.db",
-    authToken: process.env.DATABASE_AUTH_TOKEN,
+    url,
+    authToken,
   },
 });

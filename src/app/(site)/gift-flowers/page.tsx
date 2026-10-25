@@ -11,9 +11,10 @@ import { getFarmToday } from "@/server/today";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Flower Gifts in the Upper Valley · Local Bouquets & Subscriptions",
+  title: "Flower Gifts in the Upper Valley, VT · Fresh Local Bouquets",
+  absoluteTitle: true,
   description:
-    "Thoughtful flower gifts from a small Vermont flower farm: hand-tied bouquets with a free handwritten card, or a prepaid season of monthly bouquets. Pickup in Hartland, VT.",
+    "Fresh, locally grown flower gifts from Hartland, Vermont: hand-tied bouquets with a free handwritten card, or a flower subscription for someone you love.",
   path: "/gift-flowers",
 });
 

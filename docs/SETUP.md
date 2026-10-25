@@ -11,7 +11,21 @@ production, set the same variables in your host (e.g. Vercel → Project → Set
 npm run db:setup    # migrate + seed demo catalog, demo pickup days, default settings, admin login
 ```
 
-**Production (recommended: Turso, hosted libSQL):**
+**Production, the quick way (Vercel + Turso, free plan):** from the project folder, run
+
+```bash
+vercel integration add tursocloud/database
+```
+
+accept Turso's terms when asked, and let it connect the database to the project. It sets `TURSO_DATABASE_URL` and
+`TURSO_AUTH_TOKEN`, which the app reads. Redeploy (`vercel deploy --prod`): the build runs `npm run db:bootstrap`,
+which migrates the empty database and seeds the demo catalog, settings and pickup days once. Later deploys only
+migrate. Add an admin login with `npm run admin:create` after `vercel env pull .env.local`.
+
+While the site is on its `*.vercel.app` address with a real database, the demo checkout is switched on
+automatically (no payment is taken), so the whole journey, including gift links, can be tried there.
+
+**Production, by hand (Turso, hosted libSQL):**
 
 1. Create a database at [turso.tech](https://turso.tech) (free tier is plenty for a small shop).
 2. Set `DATABASE_URL=libsql://<your-db>.turso.io` and `DATABASE_AUTH_TOKEN=<token>`.

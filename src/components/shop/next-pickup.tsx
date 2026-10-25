@@ -5,12 +5,26 @@ import { getUpcomingWindows } from "@/server/availability";
 import { loadSettings } from "@/server/settings";
 import { formatDateLong, formatTimeRange } from "@/lib/time";
 
-/** Live "next pickup" line. Request-time data: render inside <Suspense>. */
-export async function NextPickup() {
+/** Live "next pickup" line. Request-time data: render inside <Suspense>. `compact` is the hero's one-liner. */
+export async function NextPickup({ compact = false }: { compact?: boolean }) {
   await connection();
   const settings = await loadSettings();
   const windows = await getUpcomingWindows(db, { now: new Date(), cutoffHours: settings.orderCutoffHours, limit: 12 });
   const next = windows.find((w) => w.bookable);
+  if (compact) {
+    return (
+      <p className="text-[0.875rem] text-ink-soft">
+        {next ? (
+          <>
+            Next pickup: <span className="font-medium text-ink">{formatDateLong(next.date)}</span>,{" "}
+            {formatTimeRange(next.startTime, next.endTime)}
+          </>
+        ) : (
+          "New pickup days are posted as the garden blooms."
+        )}
+      </p>
+    );
+  }
   return (
     <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-soft">
       {next ? (

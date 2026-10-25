@@ -33,6 +33,24 @@ export const site = {
   // PROVISIONAL: placeholder inbox until Sarah confirms the address she wants to publish.
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@harlowbrookflowers.com",
   authorSite: "https://www.sarahstewarttaylor.com/",
+  /**
+   * Official profiles (Google Business Profile, Instagram, Facebook, Apple Maps…). Each one added here appears in
+   * the business structured data as `sameAs`, which helps search engines connect the listings to this site.
+   */
+  social: [] as string[],
+  /** Towns customers come from, for structured data and the Upper Valley guide. Pickup is always in Hartland. */
+  serviceTowns: [
+    "Hartland, VT",
+    "Windsor, VT",
+    "Woodstock, VT",
+    "Quechee, VT",
+    "White River Junction, VT",
+    "Norwich, VT",
+    "Plainfield, NH",
+    "Cornish, NH",
+    "Lebanon, NH",
+    "Hanover, NH",
+  ],
   // Small "Sample photo" note on provisional stock photography. Turn off once Sarah's own photos are in.
   labelSamplePhotos: true,
 } as const;
@@ -56,6 +74,7 @@ export const footerNav = {
     { href: "/about", label: "About the farm" },
     { href: "/wholesale", label: "Wholesale & markets" },
     { href: "/how-it-works", label: "How pickup works" },
+    { href: "/guides", label: "Flower guides" },
     { href: "/faq", label: "Questions" },
     { href: "/contact", label: "Contact" },
   ],

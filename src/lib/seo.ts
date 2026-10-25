@@ -4,8 +4,8 @@ import { productAvailability } from "@/domain/catalog";
 import { site } from "./site";
 
 /** Routes that draw their own link-preview card (an opengraph-image.tsx beside the page). */
-const SHARE_CARD_PATHS = ["/shop", "/subscriptions", "/wholesale", "/about", "/gift-flowers", "/how-it-works", "/faq", "/contact"];
-const hasOwnShareCard = (path: string) => SHARE_CARD_PATHS.includes(path) || /^\/shop\/[^/]+$/.test(path);
+const SHARE_CARD_PATHS = ["/shop", "/subscriptions", "/wholesale", "/about", "/gift-flowers", "/how-it-works", "/faq", "/contact", "/guides"];
+const hasOwnShareCard = (path: string) => SHARE_CARD_PATHS.includes(path) || /^\/(shop|guides)\/[^/]+$/.test(path);
 
 /**
  * Consistent per-page metadata with canonical URL and Open Graph. The share image comes from the nearest
@@ -44,19 +44,38 @@ export function pageMetadata(input: {
 
 const abs = (path: string) => (path.startsWith("http") ? path : `${site.url}${path}`);
 
-/** Florist (a LocalBusiness subtype). Locality only: the farm address is a private residence. */
-export function localBusinessJsonLd() {
+/** The site itself, so search engines show "Harlow Brook Flowers" as the site name. */
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${site.url}/#website`,
+    name: site.name,
+    alternateName: site.shortName,
+    url: site.url,
+    inLanguage: "en-US",
+    publisher: { "@id": `${site.url}/#business` },
+  };
+}
+
+/**
+ * The business: a Florist (a LocalBusiness type) that grows its own flowers. Locality and town-level coordinates
+ * only, because the farm is a private home. Pass the listed products to describe what it sells.
+ */
+export function localBusinessJsonLd(products: Product[] = []) {
   return {
     "@context": "https://schema.org",
     "@type": "Florist",
     "@id": `${site.url}/#business`,
     name: site.name,
+    alternateName: site.shortName,
     description: site.description,
+    slogan: site.tagline,
     url: site.url,
     email: site.email,
-    image: abs("/og/harlow-brook.jpg"),
-    logo: abs("/icon.svg"),
-    founder: { "@type": "Person", name: site.owner },
+    image: [abs("/opengraph-image"), abs("/images/photos/sarah-stewart-taylor.webp")],
+    logo: abs("/logo.png"),
+    founder: { "@type": "Person", name: site.owner, url: site.authorSite, sameAs: [site.authorSite] },
     address: {
       "@type": "PostalAddress",
       addressLocality: site.location.locality,
@@ -64,13 +83,47 @@ export function localBusinessJsonLd() {
       postalCode: site.location.postalCode,
       addressCountry: site.location.country,
     },
+    geo: { "@type": "GeoCoordinates", latitude: site.location.geo.latitude, longitude: site.location.geo.longitude },
     areaServed: [
-      { "@type": "City", name: "Hartland, Vermont" },
+      ...site.serviceTowns.map((town) => ({ "@type": "City", name: town })),
       { "@type": "AdministrativeArea", name: "Upper Valley, Vermont and New Hampshire" },
     ],
+    knowsAbout: ["Fresh cut flowers", "Locally grown flowers", "Seasonal bouquets", "Dahlias", "Zinnias", "Flower subscriptions", "Wholesale cut flowers"],
+    ...(products.length
+      ? {
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Fresh cut flowers from Harlow Brook",
+            itemListElement: products.map((p) => ({
+              "@type": "Offer",
+              price: (p.priceCents / 100).toFixed(2),
+              priceCurrency: "USD",
+              itemOffered: { "@type": "Product", name: p.name, url: abs(p.kind === "subscription" ? "/subscriptions" : `/shop/${p.slug}`) },
+            })),
+          },
+        }
+      : {}),
+    potentialAction: { "@type": "OrderAction", target: abs("/shop"), deliveryMethod: "https://schema.org/OnSitePickup" },
     priceRange: "$20–$210",
     currenciesAccepted: "USD",
     paymentAccepted: "Credit card",
+    ...(site.social.length ? { sameAs: site.social } : {}),
+  };
+}
+
+/** A guide article, published by the farm. */
+export function articleJsonLd(a: { title: string; description: string; path: string; image: string; published: string; modified: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: a.title,
+    description: a.description,
+    image: [abs(a.image)],
+    datePublished: a.published,
+    dateModified: a.modified,
+    mainEntityOfPage: abs(a.path),
+    author: { "@type": "Organization", name: site.name, url: site.url },
+    publisher: { "@id": `${site.url}/#business` },
   };
 }
 
@@ -90,6 +143,8 @@ export function productJsonLd(product: Product, today: string) {
     "@type": "Product",
     name: product.name,
     description: product.summary,
+    sku: product.slug,
+    category: "Fresh cut flowers",
     image: product.images.map((i) => abs(i.src)),
     brand: { "@type": "Brand", name: site.name },
     url: abs(path),
@@ -97,6 +152,7 @@ export function productJsonLd(product: Product, today: string) {
       "@type": "Offer",
       price: (product.priceCents / 100).toFixed(2),
       priceCurrency: "USD",
+      itemCondition: "https://schema.org/NewCondition",
       availability,
       url: abs(path),
       seller: { "@id": `${site.url}/#business` },

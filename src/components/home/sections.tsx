@@ -40,51 +40,61 @@ export function ShopSection({ products, today }: { products: Product[]; today: s
   );
 }
 
+/**
+ * The farm's story as a page from a book (Sarah is a novelist): a large centered line, a short serif text that
+ * opens with a drop cap, and two captioned photographs at different heights that drift apart as you scroll.
+ */
 export function StorySection() {
   const c = homeContent.story;
   return (
-    <section
-      aria-labelledby="story-title"
-      className="container-page grid items-center gap-16 pb-28 sm:pb-36 lg:grid-cols-12 lg:gap-16"
-    >
-      <div className="relative lg:col-span-7">
-        <RevealImage className="w-[82%] sm:w-[78%]">
-          <Photo
-            src="/images/photos/dahlia-bouquet-in-hand.webp"
-            className="aspect-[4/5]"
-            sizes="(max-width: 1024px) 80vw, 50vw"
-          />
-        </RevealImage>
-        <Parallax className="absolute right-0 -bottom-10 w-[48%]" distance={50}>
-          <Reveal delay={0.25} className="border-[6px] border-cream bg-cream sm:border-8">
-            <Photo
-              src="/images/photos/dahlia-rows.webp"
-              sample={false}
-              className="aspect-[4/3]"
-              sizes="(max-width: 1024px) 45vw, 28vw"
-            />
-          </Reveal>
-        </Parallax>
-      </div>
-      <Reveal className="lg:col-span-5 lg:pl-4">
+    <section aria-labelledby="story-title" className="container-page pt-6 pb-28 sm:pb-36">
+      <Reveal className="text-center">
         <Eyebrow>{c.eyebrow}</Eyebrow>
-        <h2 id="story-title" className="t-h2 mt-3">
+        <h2
+          id="story-title"
+          className="mx-auto mt-4 max-w-4xl font-display text-[clamp(2.75rem,6.2vw,5.75rem)] leading-[0.98] font-medium tracking-[-0.028em]"
+        >
           {c.title}
         </h2>
-        <div className="mt-7 space-y-4 text-[1.0625rem] leading-relaxed text-ink-soft">
-          {c.paragraphs.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-        </div>
-        <div className="mt-8 flex flex-wrap gap-x-8">
-          <Link href="/about" className="link-rule">
-            Our story
-          </Link>
-          <Link href="/how-it-works" className="link-rule">
-            How pickup works
-          </Link>
-        </div>
       </Reveal>
+
+      <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-12 sm:mt-20 lg:grid-cols-12 lg:gap-x-10">
+        <figure className="order-2 lg:order-1 lg:col-span-4">
+          <Parallax distance={24}>
+            <RevealImage>
+              <Photo src="/images/photos/dahlia-bouquet-in-hand.webp" className="aspect-[3/4]" sizes="(max-width: 1024px) 45vw, 30vw" />
+            </RevealImage>
+            <figcaption className="t-meta mt-3">{c.captions[0]}</figcaption>
+          </Parallax>
+        </figure>
+
+        <Reveal className="order-1 col-span-2 mx-auto max-w-[28rem] lg:order-2 lg:col-span-4 lg:pt-20">
+          <div className="space-y-5 font-display text-[1.1875rem] leading-[1.65] text-ink-soft">
+            {c.paragraphs.map((p, i) => (
+              <p key={p} className={i === 0 ? "drop-cap" : undefined}>
+                {p}
+              </p>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap gap-x-8">
+            <Link href="/about" className="link-rule">
+              Our story
+            </Link>
+            <Link href="/how-it-works" className="link-rule">
+              How pickup works
+            </Link>
+          </div>
+        </Reveal>
+
+        <figure className="order-3 mt-16 lg:col-span-4 lg:mt-0 lg:pt-44">
+          <Parallax distance={56}>
+            <RevealImage delay={0.15}>
+              <Photo src="/images/photos/dahlia-rows.webp" className="aspect-[4/5]" sizes="(max-width: 1024px) 45vw, 30vw" />
+            </RevealImage>
+            <figcaption className="t-meta mt-3">{c.captions[1]}</figcaption>
+          </Parallax>
+        </figure>
+      </div>
     </section>
   );
 }
@@ -194,7 +204,12 @@ export function SeasonSection({ seasonNote }: { seasonNote: string }) {
             </RevealItem>
           ))}
         </RevealGroup>
-        <p className="t-meta mt-10 sm:mt-14">{c.footnote}</p>
+        <div className="mt-10 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 sm:mt-14">
+          <p className="t-meta">{c.footnote}</p>
+          <Link href="/guides/vermont-flower-season" className="link-rule">
+            The Vermont flower season, month by month
+          </Link>
+        </div>
       </div>
     </section>
   );

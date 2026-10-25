@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Route } from "next";
-import { AnimatePresence, useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
+import { AnimatePresence, useScroll, useTransform, type Variants } from "motion/react";
 import * as m from "motion/react-m";
 import { EASE } from "@/components/motion/reveal";
 import { useCart } from "@/components/cart/cart-provider";
@@ -32,7 +32,8 @@ const slideVariants: Variants = {
   idle: { opacity: 0, y: 36, scale: 0.93, rotate: -2.5, transition: { duration: 0.55, ease: EASE } },
 };
 
-export function Hero({ slides, copy }: { slides: HeroSlide[]; copy: HeroCopy }) {
+/** `pickup` is the live next-pickup line, streamed in from the server. */
+export function Hero({ slides, copy, pickup }: { slides: HeroSlide[]; copy: HeroCopy; pickup?: React.ReactNode }) {
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState<Set<number>>(() => new Set([0]));
   const { open, announce } = useCart();
@@ -40,13 +41,13 @@ export function Hero({ slides, copy }: { slides: HeroSlide[]; copy: HeroCopy }) 
   const slide = slides[index];
 
   // Scroll depth: the wordmark drifts back and fades, the butter circle swells, the bouquet lifts a touch.
+  // Reduced-motion visitors keep everything still via [data-parallax] in globals.css.
   const sectionRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const wordY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, 150]);
-  const wordOpacity = useTransform(scrollYProgress, [0, 0.85], reduce ? [1, 1] : [1, 0.1]);
-  const stageY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -50]);
-  const circleScale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1, 1.22]);
+  const wordY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const wordOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.1]);
+  const stageY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const circleScale = useTransform(scrollYProgress, [0, 1], [1, 1.22]);
 
   // Load the other bouquets well after the first paint (or as soon as someone reaches for them),
   // so they never compete with the hero image on a slow connection.
@@ -87,19 +88,26 @@ export function Hero({ slides, copy }: { slides: HeroSlide[]; copy: HeroCopy }) 
           id="hero-title"
           className="hero-wordmark relative z-10 text-center text-ink select-none"
           style={{ y: wordY, opacity: wordOpacity }}
+          data-parallax
         >
-          <span className="t-wordmark block whitespace-nowrap max-sm:whitespace-normal">
-            <span className="hero-word">Harlow</span>{" "}
-            <span className="hero-word max-sm:block" style={{ "--d": "140ms" } as React.CSSProperties}>
-              Brook
+          {/* The full name is the logo: one line from small tablets up, "Harlow Brook / Flowers" on phones. */}
+          <span className="t-wordmark block sm:whitespace-nowrap">
+            <span className="whitespace-nowrap">
+              <span className="hero-word">Harlow</span>{" "}
+              <span className="hero-word" style={{ "--d": "120ms" } as React.CSSProperties}>
+                Brook
+              </span>
+            </span>{" "}
+            <span className="hero-word max-sm:block" style={{ "--d": "240ms" } as React.CSSProperties}>
+              Flowers
             </span>
           </span>
-          <span className="hero-flowers"> Flowers</span>
         </m.h1>
 
         <m.div
           className="hero-stage relative z-20"
           style={{ y: stageY }}
+          data-parallax
           aria-roledescription="carousel"
           aria-label="Bouquets from the garden"
           onPointerDown={(e) => {
@@ -112,7 +120,7 @@ export function Hero({ slides, copy }: { slides: HeroSlide[]; copy: HeroCopy }) 
             if (Math.abs(dx) > 40) show(index + (dx < 0 ? 1 : -1));
           }}
         >
-          <m.div aria-hidden className="hero-circle absolute left-1/2 -translate-x-1/2" style={{ scale: circleScale }}>
+          <m.div aria-hidden className="hero-circle absolute left-1/2 -translate-x-1/2" style={{ scale: circleScale }} data-parallax>
             <div className="hero-circle-in h-full w-full rounded-full bg-butter" />
           </m.div>
           <div aria-hidden className="hero-shadow hero-shadow-in absolute left-1/2 -translate-x-1/2" />
@@ -165,7 +173,8 @@ export function Hero({ slides, copy }: { slides: HeroSlide[]; copy: HeroCopy }) 
               Give a season of flowers
             </Link>
           </div>
-          <p className="hero-note t-meta mt-6">{copy.note}</p>
+          <div className="mt-5 min-h-5">{pickup}</div>
+          <p className="hero-note t-meta mt-3">{copy.note}</p>
         </div>
 
         <div

@@ -8,9 +8,10 @@ import { getSettings } from "@/server/settings";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "How Ordering & Local Pickup Work",
+  title: "Local Flower Pickup in Hartland, VT · How Ordering Works",
+  absoluteTitle: true,
   description:
-    "How to order fresh, locally grown flowers from Harlow Brook Flowers: choose a bouquet, pick a pickup day, pay securely, and collect at the farm in Hartland, Vermont.",
+    "How to order fresh cut flowers from Harlow Brook Flowers: choose a bouquet, pick a pickup day, pay securely online, and collect at the farm in Hartland, Vermont.",
   path: "/how-it-works",
 });
 
@@ -111,9 +112,12 @@ export default async function HowItWorksPage() {
       <section className="border-t border-line">
         <div className="container-page flex flex-col items-start justify-between gap-6 py-14 sm:flex-row sm:items-center">
           <p className="t-h3">Still have a question?</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-x-6">
             <Link href="/faq" className="link-rule">
               Read the FAQ
+            </Link>
+            <Link href="/guides/fresh-cut-flowers-upper-valley" className="link-rule">
+              Driving times to Hartland
             </Link>
             <Link href="/contact" className="link-rule">
               Contact us

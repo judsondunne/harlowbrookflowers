@@ -29,7 +29,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center justify-between gap-3 px-5 py-4 lg:block">
           <Link href="/admin" className="flex items-center gap-2">
             <SprigMark size={24} className="text-ink-soft" />
-            <span className="font-display text-lg">Harlow Brook</span>
+            <span className="font-wordmark text-lg tracking-[-0.02em]">Harlow Brook Flowers</span>
           </Link>
           <div className="lg:mt-3">
             <Badge tone={mode === "stripe_live" ? "good" : mode === "stripe_test" ? "warn" : "neutral"}>

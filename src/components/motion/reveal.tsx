@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import * as m from "motion/react-m";
-import { useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
+import { useScroll, useTransform, type Variants } from "motion/react";
 import { cn } from "@/lib/format";
 
 /*
@@ -94,14 +94,16 @@ export function RevealImage({ children, className, delay = 0 }: { children: Reac
   );
 }
 
-/** Drifts its content against the scroll, by up to `distance` pixels either way. */
+/**
+ * Drifts its content against the scroll, by up to `distance` pixels either way. Server and browser render the
+ * same transform (so hydration matches); reduced-motion visitors have it switched off in CSS ([data-parallax]).
+ */
 export function Parallax({ children, className, distance = 40 }: { children: ReactNode; className?: string; distance?: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [distance, -distance]);
+  const y = useTransform(scrollYProgress, [0, 1], [distance, -distance]);
   return (
-    <m.div ref={ref} className={className} style={{ y }}>
+    <m.div ref={ref} className={className} style={{ y }} data-parallax>
       {children}
     </m.div>
   );

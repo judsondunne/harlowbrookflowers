@@ -99,6 +99,17 @@ When someone shares a page in Messages, Facebook, Slack or email, the preview ca
 recipient's card). They use copies of the fonts and photos in `src/assets/og`; if you replace a photo on the site,
 replace its copy there too (same name, PNG for bouquet cutouts, JPEG for photos).
 
+## Guides
+
+The guides at `/guides` (season calendar, flower care, Upper Valley) live in `src/content/guides.ts` as plain text,
+headings, lists and tables. Edit the words there; add a new guide by copying one entry. Each guide gets its own page,
+link-preview card, sitemap entry and article data automatically. Search plan: `docs/LOCAL_SEO.md`.
+
+## Logo
+
+The logo is the words **Harlow Brook Flowers** in Gloock. `public/logo.png` is the square version for Google Business
+Profile, Apple Business Connect and social profiles.
+
 ## Website words
 
 Most wording lives in plain files, so it can change without touching the design:

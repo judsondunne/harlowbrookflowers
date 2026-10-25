@@ -10,9 +10,10 @@ import { getFarmToday } from "@/server/today";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Shop Fresh Flower Bouquets · Pickup in Hartland, VT",
+  title: "Fresh Cut Flower Bouquets, Hartland VT · Harlow Brook Flowers",
+  absoluteTitle: true,
   description:
-    "Order seasonal, locally grown bouquets from Harlow Brook Flowers for pickup in Hartland, Vermont. Three sizes from $20, plus prepaid flower subscriptions to give as gifts.",
+    "Order fresh cut flower bouquets grown in Hartland, Vermont, for pickup at the farm. Three sizes from $20, hand-tied from whatever is blooming that week.",
   path: "/shop",
 });
 

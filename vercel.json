@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "if [ -z \"$DATABASE_URL\" ]; then npm run db:migrate && npm run db:seed; fi && npm run build",
+  "buildCommand": "npm run db:bootstrap && npm run build",
   "crons": [{ "path": "/api/cron/sweep", "schedule": "0 9 * * *" }]
 }

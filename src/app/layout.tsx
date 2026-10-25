@@ -19,7 +19,7 @@ const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", d
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Harlow Brook Flowers · Seasonal Cut Flowers in Hartland, Vermont",
+    default: "Fresh Cut Flowers in Hartland, Vermont · Harlow Brook Flowers",
     template: "%s · Harlow Brook Flowers",
   },
   description: site.description,
@@ -33,7 +33,16 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   formatDetection: { telephone: false, address: false, email: false },
-  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
+  verification: {
+    ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+    ...(process.env.BING_SITE_VERIFICATION ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } } : {}),
+  },
+  // Town-level geo hints for local search; the farm itself is a private home.
+  other: {
+    "geo.region": "US-VT",
+    "geo.placename": "Hartland, Vermont",
+    "geo.position": `${site.location.geo.latitude};${site.location.geo.longitude}`,
+  },
   robots: site.indexable ? undefined : { index: false, follow: false },
 };
 

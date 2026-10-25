@@ -16,6 +16,7 @@ const rightNav = mainNav.slice(3);
 const moreLinks = [
   { href: "/gift-flowers", label: "Gift flowers" },
   { href: "/how-it-works", label: "How pickup works" },
+  { href: "/guides", label: "Flower guides" },
   { href: "/faq", label: "Questions" },
 ] as const;
 
@@ -73,7 +74,7 @@ export function Header() {
               Menu
             </button>
             <nav aria-label="Main" className="hidden lg:block">
-              <ul className="flex items-center gap-7 xl:gap-9">
+              <ul className="flex items-center gap-5 xl:gap-9">
                 {leftNav.map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className="nav-link">
@@ -95,9 +96,9 @@ export function Header() {
             <Logo tabIndex={logoHidden ? -1 : undefined} />
           </div>
 
-          <div className="flex items-center justify-self-end gap-7 xl:gap-9">
+          <div className="flex items-center justify-self-end gap-5 xl:gap-9">
             <nav aria-label="More" className="hidden lg:block">
-              <ul className="flex items-center gap-7 xl:gap-9">
+              <ul className="flex items-center gap-5 xl:gap-9">
                 {rightNav.map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className="nav-link">

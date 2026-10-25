@@ -30,8 +30,9 @@ export async function generateMetadata({ params }: PageProps<"/shop/[slug]">): P
   const product = await getProductBySlug(slug);
   if (!product) return { title: "Bouquet not found" };
   return pageMetadata({
-    title: `${product.name} · ${formatPrice(product.priceCents)} Seasonal Bouquet`,
-    description: `${product.summary} Locally grown in Hartland, Vermont, for pickup at the farm.`,
+    title: `${product.name} · ${formatPrice(product.priceCents)} Fresh Cut Bouquet · Vermont`,
+    absoluteTitle: true,
+    description: `${product.summary} Fresh cut flowers grown in Hartland, Vermont, picked for your pickup day at the farm.`,
     path: `/shop/${product.slug}`,
   });
 }
@@ -127,6 +128,9 @@ async function ProductContent({ params }: { params: PageProps<"/shop/[slug]">["p
                       <li key={d}>{d}</li>
                     ))}
                   </ul>
+                  <Link href="/guides/how-to-keep-cut-flowers-fresh" className="link-rule mt-2">
+                    More on keeping cut flowers fresh
+                  </Link>
                 </AccordionItem>
               )}
               <AccordionItem title="Pickup & changes">
