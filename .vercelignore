@@ -1,0 +1,8 @@
+# Never upload local state: the dev database (with local admin login), uploads, env files or build output.
+/data
+/public/uploads
+.env*
+!.env.example
+/.next
+/node_modules
+*.tsbuildinfo
