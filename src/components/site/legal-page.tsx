@@ -24,7 +24,7 @@ export function LegalPage({
         <p className="mt-4 text-sm text-muted">Draft dated {updated}</p>
         <aside className="mt-8 rounded-sm bg-butter/60 p-5 text-sm leading-relaxed" aria-label="Draft notice">
           <p className="flex items-center gap-2 font-semibold">
-            <IconInfo size={18} className="text-olive" /> Draft, not yet reviewed
+            <IconInfo size={18} className="text-ink-soft" /> Draft, not yet reviewed
           </p>
           <p className="mt-2 text-ink-soft">
             This is an initial draft prepared for Harlow Brook Flowers. It has not been reviewed by a lawyer and will be

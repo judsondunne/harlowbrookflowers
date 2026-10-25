@@ -89,6 +89,13 @@ export const cartStore = {
   remove(key: string) {
     commit({ ...state, lines: state.lines.filter((l) => l.key !== key) });
   },
+  /** Edits a gift line's card in place (recipient, sender, message, design). Its key stays the same. */
+  updateGift(key: string, patch: Partial<NonNullable<CartLine["gift"]>>) {
+    commit({
+      ...state,
+      lines: state.lines.map((l) => (l.key === key && l.gift ? { ...l, gift: { ...l.gift, ...patch } } : l)),
+    });
+  },
   setPickup(pickupWindowId: string | undefined) {
     commit({ ...state, pickupWindowId });
   },

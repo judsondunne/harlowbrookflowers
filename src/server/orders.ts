@@ -8,6 +8,7 @@ import { loadSettings } from "./settings";
 import { buildQuote, type Quote } from "./pricing";
 import type { Cart, CheckoutContact } from "@/domain/cart";
 import { canTransition, type OrderStatus } from "@/domain/order";
+import { DEFAULT_CARD_STYLE } from "@/domain/gift-card";
 import { farmToday } from "@/lib/time";
 
 type Tx = Parameters<Parameters<Database["transaction"]>[0]>[0];
@@ -163,6 +164,9 @@ async function tryReReserve(tx: Executor, order: OrderRow, now: Date): Promise<b
   return true;
 }
 
+/** 128 random bits, URL-safe: the private address of a recipient's gift page. */
+export const newShareToken = () => randomBytes(16).toString("base64url");
+
 async function createGiftSubscriptions(tx: Executor, order: OrderRow, now: Date) {
   const items = await tx
     .select()
@@ -186,6 +190,8 @@ async function createGiftSubscriptions(tx: Executor, order: OrderRow, now: Date)
         senderName: gift.senderName,
         message: gift.message ?? "",
         startMonth: gift.startMonth,
+        cardStyle: gift.cardStyle ?? DEFAULT_CARD_STYLE,
+        shareToken: newShareToken(),
         createdAt: now.toISOString(),
         updatedAt: now.toISOString(),
       })

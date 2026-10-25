@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { CartProvider } from "@/components/cart/cart-provider";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { LazyCartDrawer } from "@/components/cart/lazy-cart-drawer";
 import { Header } from "./header";
 import { Footer } from "./footer";
@@ -9,6 +10,7 @@ import { Announcement } from "./announcement";
 export function SiteChrome({ children }: { children: ReactNode }) {
   return (
     <CartProvider>
+      <MotionProvider>
       <a
         href="#main"
         className="sr-only z-50 bg-ink px-4 py-2 text-sm text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -22,6 +24,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <LazyCartDrawer />
+      </MotionProvider>
     </CartProvider>
   );
 }

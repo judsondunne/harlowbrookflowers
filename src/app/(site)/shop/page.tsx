@@ -45,7 +45,9 @@ export default async function ShopPage() {
         </div>
         <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {bouquets.map((p, i) => (
-            <ProductCard key={p.id} product={p} today={today} priority={i < 3} />
+            <div key={p.id} className="enter-rise" style={{ "--d": `${200 + i * 110}ms` } as React.CSSProperties}>
+              <ProductCard product={p} today={today} priority={i < 3} />
+            </div>
           ))}
         </div>
       </section>

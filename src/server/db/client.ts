@@ -29,7 +29,8 @@ function connect(): { client: Client; db: Database } {
  */
 function resolveUrl(url: string) {
   if (!process.env.VERCEL || !url.startsWith("file:")) return url;
-  const bundled = path.resolve(process.cwd(), url.slice("file:".length));
+  // Always the build's default location (vercel.json seeds it); a fixed path keeps file tracing to this one file.
+  const bundled = path.join(process.cwd(), "data", "harlow-brook.db");
   const working = "/tmp/harlow-brook.db";
   if (!existsSync(working) && existsSync(bundled)) copyFileSync(bundled, working);
   return `file:${working}`;

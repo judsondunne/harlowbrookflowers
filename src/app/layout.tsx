@@ -1,19 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Gloock, Hanken_Grotesk, Instrument_Serif, Newsreader } from "next/font/google";
+import { Gloock, Hanken_Grotesk, Newsreader } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { Analytics } from "@/components/site/analytics";
 
-// Gloock + Instrument Serif italic: the wordmark lockup only (hero, logo, footer sign-off).
+// Gloock: the wordmark only (hero, logo, footer sign-off).
 const gloock = Gloock({ weight: "400", subsets: ["latin"], variable: "--font-gloock", display: "swap" });
-const instrument = Instrument_Serif({
-  weight: "400",
-  style: ["italic"],
-  subsets: ["latin"],
-  variable: "--font-instrument",
-  display: "swap",
-});
-// Newsreader (with optical sizes): every heading and the occasional italic. Hanken Grotesk: text and interface.
+// Newsreader (with optical sizes): every heading, and book titles in italic. Hanken Grotesk: text and interface.
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
@@ -51,7 +44,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${gloock.variable} ${instrument.variable} ${newsreader.variable} ${hanken.variable}`}>
+    <html lang="en" className={`${gloock.variable} ${newsreader.variable} ${hanken.variable}`}>
       <body className="min-h-dvh bg-cream antialiased">
         {children}
         <Analytics />

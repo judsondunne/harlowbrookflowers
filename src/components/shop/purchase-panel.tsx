@@ -158,7 +158,7 @@ export function PurchasePanel({
         >
           <div className="flex items-center gap-4">
             <div className="min-w-0 flex-1">
-              <p className="truncate font-display text-lg leading-tight">{product.name}</p>
+              <p className="truncate font-display font-medium text-lg leading-tight">{product.name}</p>
               <p className="text-sm text-muted tabular-nums">{formatPrice(product.priceCents * quantity)}</p>
             </div>
             <Button onClick={add} tabIndex={buttonVisible ? -1 : 0}>
@@ -173,7 +173,7 @@ export function PurchasePanel({
 
       <p className="border-t border-line pt-5 text-sm leading-relaxed text-ink-soft">
         <span>
-          <span className="font-display text-[1rem] text-ink italic">Seasonal by nature.</span> Photos show the style and size. Your bouquet
+          <span className="font-display text-[1rem] font-medium text-ink">Seasonal by nature.</span> Photos show the style and size. Your bouquet
           is made from what&apos;s blooming that week, so the exact flowers and colors will differ.
         </span>
       </p>

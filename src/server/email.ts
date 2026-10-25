@@ -1,6 +1,7 @@
 import "server-only";
 import { db as defaultDb, schema, type Database } from "./db/client";
 import { siteOrigin } from "./config";
+import { giftPageUrl } from "./gifts";
 import type { OrderDetail } from "./orders";
 import type { StoreSettings } from "@/domain/settings";
 import { formatMoney, formatOrderNumber } from "@/lib/format";
@@ -72,8 +73,15 @@ export function orderConfirmationEmail(detail: OrderDetail, settings: StoreSetti
   const pickup = window
     ? `PICKUP\n${formatDateLong(window.date)}, ${formatTimeRange(window.startTime, window.endTime)}\n${settings.pickupLocationPublic}\n\n${settings.pickupInstructions}`
     : "";
+  const giftLinks = detail.gifts
+    .filter((g) => g.shareToken)
+    .map((g) => `${g.recipientName}'s gift page, to send them if you'd like: ${giftPageUrl(g.shareToken!)}`);
   const gifts = detail.items.some((i) => i.kind === "subscription")
-    ? "GIFT SUBSCRIPTIONS\nSarah will email each month's pickup dates before the season begins. Recipients collect their bouquets in Hartland."
+    ? [
+        "GIFT SUBSCRIPTIONS",
+        "Sarah will email each month's pickup dates before the season begins. Recipients collect their bouquets in Hartland.",
+        ...giftLinks,
+      ].join("\n")
     : "";
   return {
     to: order.customerEmail,
@@ -121,7 +129,16 @@ export function orderNotificationEmail(detail: OrderDetail, to: string): Email {
   };
 }
 
-export function giftRecipientEmail(gift: { recipientName: string; recipientEmail: string; senderName: string; message: string; planName: string; startMonth: string }): Email {
+export function giftRecipientEmail(gift: {
+  recipientName: string;
+  recipientEmail: string;
+  senderName: string;
+  message: string;
+  planName: string;
+  startMonth: string;
+  /** The recipient's gift page, when one exists. */
+  link?: string;
+}): Email {
   return {
     to: gift.recipientEmail,
     subject: `${gift.senderName} has given you a season of flowers`,
@@ -134,6 +151,7 @@ export function giftRecipientEmail(gift: { recipientName: string; recipientEmail
       gift.message ? `Their note:\n"${gift.message}"\n` : "",
       `Your first bouquet will be ready in ${formatMonth(gift.startMonth)}. Sarah will write before then with pickup dates in Hartland so you can choose one that suits you.`,
       "",
+      gift.link ? `See your gift and your card: ${gift.link}\n` : "",
       "With warm wishes from the garden,",
       "Harlow Brook Flowers",
     ].join("\n"),

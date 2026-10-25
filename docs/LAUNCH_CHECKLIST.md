@@ -45,6 +45,8 @@ what stands between the preview and opening the shop.
 - [ ] **Wholesale:** which offerings are real (wrapped bouquets, mixed bunches, bulk stems, display arrangements,
       regular orders), whether there's a minimum, how and where orders are collected, and how far she'd travel, if at
       all. Edit `src/content/wholesale.ts`; nothing there is a commitment yet.
+- [ ] Gift pages: read one end to end (place a test gift order) and confirm the wording about pickup dates matches
+      how Sarah will actually contact recipients.
 - [ ] Set **Admin → Settings → order notification email** so wholesale inquiries and contact messages reach her
       inbox, not just the admin outbox.
 

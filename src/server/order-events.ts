@@ -1,4 +1,5 @@
 import "server-only";
+import { giftPageUrl } from "./gifts";
 import { revalidateTag } from "next/cache";
 import { db as defaultDb, schema, type Database } from "./db/client";
 import { loadOrderDetail, markOrderPaid, type OrderRow } from "./orders";
@@ -34,6 +35,7 @@ async function onFirstPaid(order: OrderRow, db: Database) {
   for (const item of detail.items) {
     const gift = item.gift;
     if (item.kind === "subscription" && gift?.notifyRecipient && gift.recipientEmail) {
+      const token = detail.gifts.find((g) => g.orderItemId === item.id)?.shareToken;
       jobs.push(
         sendEmail(
           giftRecipientEmail({
@@ -43,6 +45,7 @@ async function onFirstPaid(order: OrderRow, db: Database) {
             message: gift.message ?? "",
             planName: item.productName,
             startMonth: gift.startMonth,
+            link: token ? giftPageUrl(token) : undefined,
           }),
           db,
         ),

@@ -72,7 +72,7 @@ export function ContactForm({ previewNotice = false }: { previewNotice?: boolean
       <TextArea id="c-message" name="message" label="Message" rows={6} maxLength={3000} required defaultValue={v.message} error={e.message} />
 
       {previewNotice && (
-        <p className="border-l-2 border-olive bg-butter/50 px-4 py-3 text-[0.8125rem] leading-relaxed text-ink-soft">
+        <p className="border-l-2 border-ink/30 bg-butter/50 px-4 py-3 text-[0.8125rem] leading-relaxed text-ink-soft">
           This is a preview of the site, so messages sent from it aren&apos;t kept yet.
         </p>
       )}

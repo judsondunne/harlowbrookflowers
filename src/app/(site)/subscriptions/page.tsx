@@ -6,6 +6,7 @@ import { GiftCardFace } from "@/components/subscriptions/gift-card";
 import { AccordionItem } from "@/components/ui/accordion";
 import { ButtonLink } from "@/components/ui/button";
 import { Photo } from "@/components/ui/photo";
+import { Reveal, RevealGroup, RevealImage, RevealItem } from "@/components/motion/reveal";
 import { Eyebrow } from "@/components/ui/typography";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqGroups } from "@/content/faq";
@@ -13,7 +14,7 @@ import { primaryImage, productAvailability } from "@/domain/catalog";
 import { getListedProducts } from "@/server/catalog";
 import { getFarmToday } from "@/server/today";
 import { breadcrumbJsonLd, faqJsonLd, pageMetadata, productJsonLd } from "@/lib/seo";
-import { formatPrice } from "@/lib/format";
+import { formatPrice, numberWord } from "@/lib/format";
 import { formatMonth } from "@/lib/time";
 
 export const metadata: Metadata = pageMetadata({
@@ -23,7 +24,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/subscriptions",
 });
 
-const numberWord = (n: number) => ["no", "one", "two", "three", "four", "five", "six", "seven", "eight"][n] ?? String(n);
+const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 const capitalize = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 export default async function SubscriptionsPage() {
@@ -57,7 +58,10 @@ export default async function SubscriptionsPage() {
       "What they receive",
       <>
         A{" "}
-        <Link href="/shop/garden-bouquet" className="underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+        <Link
+          href="/shop/garden-bouquet"
+          className="underline decoration-ink/35 underline-offset-4 hover:decoration-ink"
+        >
           Garden Bouquet
         </Link>{" "}
         each month: a hand-tied mix of about 20 stems, picked from whatever is blooming that week.
@@ -101,16 +105,18 @@ export default async function SubscriptionsPage() {
 
       <section className="container-page grid gap-14 pt-12 pb-20 sm:pt-16 lg:grid-cols-12 lg:items-center lg:gap-16 lg:pb-28">
         <div className="lg:col-span-5">
-          <Eyebrow>Flower subscriptions</Eyebrow>
-          <h1 className="t-h1 mt-3">Give a season of flowers.</h1>
-          <p className="t-lead mt-6 max-w-lg">
+          <Eyebrow className="enter-rise">Flower subscriptions</Eyebrow>
+          <h1 className="t-h1 enter-rise mt-3" style={d(80)}>
+            Give a season of flowers.
+          </h1>
+          <p className="t-lead enter-rise mt-6 max-w-lg" style={d(180)}>
             A gift that keeps arriving. Each month of the Vermont growing season, the person you love collects a fresh
             bouquet from our garden in Hartland, picked by hand that week.
           </p>
-          <p className="mt-6 text-[0.9375rem] text-ink-soft">
+          <p className="enter-rise mt-6 text-[0.9375rem] text-ink-soft" style={d(260)}>
             From <span className="text-ink tabular-nums">{formatPrice(fromPrice)}</span>, paid once and never renewed.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+          <div className="enter-rise mt-8 flex flex-wrap items-center gap-x-7 gap-y-3" style={d(340)}>
             <ButtonLink href="/subscriptions#gift" size="lg">
               Choose a gift
             </ButtonLink>
@@ -121,9 +127,16 @@ export default async function SubscriptionsPage() {
         </div>
 
         <div className="relative lg:col-span-6 lg:col-start-7">
-          <Photo src="/images/photos/zinnias-mason-jar.webp" priority className="aspect-[4/5] w-full sm:ml-auto sm:w-[82%]" sizes="(max-width: 1024px) 90vw, 42vw" />
+          <div className="enter-unveil w-full sm:ml-auto sm:w-[82%]" style={d(150)}>
+            <Photo
+              src="/images/photos/zinnias-mason-jar.webp"
+              priority
+              className="aspect-[4/5]"
+              sizes="(max-width: 1024px) 90vw, 42vw"
+            />
+          </div>
           <GiftCardFace
-            className="relative -mt-24 mr-6 ml-auto w-[86%] max-w-[21rem] sm:absolute sm:bottom-10 sm:left-0 sm:m-0 sm:w-[19rem]"
+            className="gift-card-tucked relative -mt-24 mr-6 ml-auto w-[86%] max-w-[21rem] sm:absolute sm:bottom-10 sm:left-0 sm:m-0 sm:w-[19rem]"
             planName="A Season of Flowers"
             detail="3 Garden Bouquets"
             recipient="Mom"
@@ -135,34 +148,37 @@ export default async function SubscriptionsPage() {
 
       <section id="included" aria-labelledby="included-title" className="scroll-mt-24 border-t border-line bg-paper">
         <div className="container-page grid gap-12 py-20 sm:py-24 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-4">
+          <Reveal className="lg:col-span-4">
             <h2 id="included-title" className="t-h2">
               What&apos;s included
             </h2>
             <p className="mt-5 max-w-sm text-[1.0625rem] leading-relaxed text-ink-soft">
               Simple to give, nothing for them to manage. Here is exactly how it works.
             </p>
-          </div>
-          <dl className="lg:col-span-8">
+          </Reveal>
+          <RevealGroup as="dl" className="lg:col-span-8">
             {included.map(([term, detail]) => (
-              <div key={term} className="grid gap-1 border-t border-line py-5 last:border-b sm:grid-cols-[11rem_1fr] sm:gap-8">
-                <dt className="font-display text-[1.1875rem] leading-snug">{term}</dt>
+              <RevealItem
+                key={term}
+                className="grid gap-1 border-t border-line py-5 last:border-b sm:grid-cols-[11rem_1fr] sm:gap-8"
+              >
+                <dt className="font-display font-medium text-[1.1875rem] leading-snug">{term}</dt>
                 <dd className="text-[0.9688rem] leading-relaxed text-ink-soft">{detail}</dd>
-              </div>
+              </RevealItem>
             ))}
-          </dl>
+          </RevealGroup>
         </div>
       </section>
 
       <section id="gift" aria-labelledby="builder" className="container-page scroll-mt-24 py-20 sm:py-28">
-        <div className="mb-12 max-w-2xl">
+        <Reveal className="mb-12 max-w-2xl">
           <h2 id="builder" className="t-h2">
             Choose your gift
           </h2>
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-soft">
             Pick a plan, tell us who it&apos;s for, and write the note that goes on their card.
           </p>
-        </div>
+        </Reveal>
         <Suspense fallback={<div className="h-[40rem] animate-pulse bg-linen/50" />}>
           <GiftBuilder plans={plans} />
         </Suspense>
@@ -170,9 +186,13 @@ export default async function SubscriptionsPage() {
 
       <section aria-labelledby="sub-faq" className="border-t border-line">
         <div className="container-page grid gap-12 py-20 sm:py-24 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-5">
-            <Photo src="/images/photos/wildflowers-blue-bucket.webp" className="aspect-[4/5]" sizes="(max-width: 1024px) 90vw, 40vw" />
-          </div>
+          <RevealImage className="lg:col-span-5">
+            <Photo
+              src="/images/photos/wildflowers-blue-bucket.webp"
+              className="aspect-[4/5]"
+              sizes="(max-width: 1024px) 90vw, 40vw"
+            />
+          </RevealImage>
           <div className="lg:col-span-6 lg:col-start-7">
             <h2 id="sub-faq" className="t-h2">
               Questions about gifting

@@ -65,7 +65,7 @@ export function ProductCard({
       </Link>
       <div className="mt-5 flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="font-display text-[1.5rem] leading-tight">
+          <h3 className="font-display font-medium text-[1.5rem] leading-tight">
             <Link href={href} className="after:absolute after:inset-0 after:content-['']">
               {product.name}
             </Link>

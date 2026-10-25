@@ -81,7 +81,7 @@ export default async function GiftFlowersPage() {
             <li key={o.title} className="border-t border-line">
               <Link href={o.href as Route} className="group flex items-baseline justify-between gap-6 py-6">
                 <span>
-                  <span className="block font-display text-[1.5rem] leading-tight font-light decoration-1 underline-offset-[0.2em] group-hover:underline">
+                  <span className="block font-display text-[1.5rem] leading-tight font-medium decoration-1 underline-offset-[0.2em] group-hover:underline">
                     {o.title}
                   </span>
                   <span className="mt-1.5 block text-[0.9375rem] text-ink-soft">{o.text}</span>

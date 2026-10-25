@@ -134,7 +134,7 @@ export function Header() {
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
                     aria-current={isActive(item.href) ? "page" : undefined}
-                    className="block py-4 font-display text-[2rem] leading-tight font-light tracking-[-0.015em] aria-[current=page]:italic"
+                    className="block py-4 font-display text-[2rem] leading-tight font-medium tracking-[-0.02em] decoration-1 underline-offset-[0.18em] aria-[current=page]:underline"
                   >
                     {item.label}
                   </Link>

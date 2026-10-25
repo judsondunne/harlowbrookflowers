@@ -46,7 +46,7 @@ export function CartDrawer() {
     >
       <div className="flex h-full flex-col">
         <header className="flex items-center justify-between border-b border-line px-6 py-5">
-          <h2 id="cart-title" className="font-display text-[1.625rem] font-light">
+          <h2 id="cart-title" className="font-display text-[1.625rem] font-medium">
             Your cart{count > 0 && <span className="ml-2 align-middle text-sm font-sans font-semibold text-muted">{count}</span>}
           </h2>
           <button
@@ -61,7 +61,7 @@ export function CartDrawer() {
 
         {cart.lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 px-8 text-center">
-            <p className="font-display text-3xl leading-tight font-light">Nothing here yet,<br />but the garden&apos;s full.</p>
+            <p className="font-display text-3xl leading-tight font-medium">Nothing here yet,<br />but the garden&apos;s full.</p>
             <p className="max-w-xs text-sm text-muted">Choose a bouquet for pickup in Hartland, or give someone a season of flowers.</p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/shop" onClick={close}>Shop bouquets</ButtonLink>

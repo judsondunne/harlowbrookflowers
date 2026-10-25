@@ -11,7 +11,7 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
   }, [error]);
   return (
     <section className="container-page flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
-      <SprigMark size={40} className="text-olive" />
+      <SprigMark size={40} className="text-ink-soft" />
       <h1 className="t-h1 mt-6 max-w-2xl">Something went wrong on our end.</h1>
       <p className="t-lead mt-5 max-w-lg">
         Sorry about that. Nothing in your cart has been lost and no payment was taken. Please try again in a moment.

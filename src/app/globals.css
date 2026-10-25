@@ -3,8 +3,8 @@
 /*
  * Harlow Brook design tokens.
  * Palette: warm cream + paper white with deep ink type.
- * Type: Gloock and Instrument Serif italic for the wordmark lockup only; Newsreader (optical sizes) for
- * headings; Hanken Grotesk for reading text and the interface.
+ * Type: Gloock for the wordmark only; Newsreader Medium (optical sizes) for headings; Hanken Grotesk for
+ * reading text, labels and the interface.
  */
 @theme {
   --color-cream: #f3efe6;
@@ -23,7 +23,6 @@
   --color-success: #4d6a43;
 
   --font-wordmark: var(--font-gloock), "Iowan Old Style", Georgia, serif;
-  --font-accent: var(--font-instrument), "Iowan Old Style", Georgia, serif;
   --font-display: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -73,7 +72,7 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 500;
     text-wrap: balance;
   }
 
@@ -110,38 +109,37 @@
   .t-h1 {
     font-family: var(--font-display);
     font-size: clamp(2.75rem, 5.4vw, 5rem);
-    font-weight: 300;
-    line-height: 1.04;
-    letter-spacing: -0.02em;
+    font-weight: 500;
+    line-height: 1.03;
+    letter-spacing: -0.022em;
   }
   .t-h2 {
     font-family: var(--font-display);
     font-size: clamp(2.125rem, 3.7vw, 3.375rem);
-    font-weight: 300;
-    line-height: 1.07;
-    letter-spacing: -0.015em;
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.018em;
   }
   .t-h3 {
     font-family: var(--font-display);
     font-size: clamp(1.375rem, 1.8vw, 1.625rem);
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.2;
-    letter-spacing: -0.005em;
+    letter-spacing: -0.01em;
   }
-  /* A quiet italic kicker above a heading, in place of tracked uppercase labels. */
+  /* A small, plain label above a heading. */
   .t-eyebrow {
-    font-family: var(--font-display);
-    font-size: 1.0625rem;
-    font-style: italic;
-    font-weight: 400;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
     line-height: 1.3;
-    color: var(--color-olive);
+    letter-spacing: 0.005em;
+    color: var(--color-muted);
   }
-  /* Italic serif for handwritten-feeling moments: gift-card lines, a single emphasized word. */
+  /* Serif for card-like moments: gift-card lines, a quoted note. */
   .t-accent {
     font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 400;
+    font-weight: 500;
   }
   /* Small interface headings (form sections, summaries). */
   .t-label {
@@ -166,7 +164,7 @@
   }
   .prose-hb h2 {
     font-size: clamp(1.5rem, 2.2vw, 2rem);
-    font-weight: 300;
+    font-weight: 500;
     line-height: 1.15;
     margin-top: 2.4rem;
     margin-bottom: 0.8rem;
@@ -261,26 +259,108 @@
   }
 }
 
-/* Reveal on scroll with CSS scroll-driven animations: no JavaScript, never hides content
- * in browsers without support, and disabled for reduced motion. */
-@keyframes hb-reveal {
+/* ─── Entrances ───────────────────────────────────────────────────────
+ * Above-the-fold content animates in with CSS, so it plays on first paint without waiting for
+ * JavaScript. Stagger with style="--d: 120ms". Scroll reveals further down use Motion (components/motion). */
+@keyframes hb-rise {
   from {
     opacity: 0;
-    transform: translate3d(0, 18px, 0);
+    transform: translate3d(0, 26px, 0);
+  }
+}
+@keyframes hb-unveil {
+  from {
+    opacity: 0;
+    clip-path: inset(16% 0 0 0);
   }
   to {
     opacity: 1;
-    transform: none;
+    clip-path: inset(0);
   }
 }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    [data-reveal] {
-      animation: hb-reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 55%;
-    }
+@keyframes hb-settle {
+  from {
+    transform: scale(1.12);
   }
+}
+@keyframes hb-word {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate3d(0, 0.18em, 0);
+  }
+}
+@keyframes hb-bloom {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+}
+@keyframes hb-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 70px, 0) scale(0.92);
+  }
+}
+@keyframes hb-fade {
+  from {
+    opacity: 0;
+  }
+}
+.enter-rise {
+  animation: hb-rise 1s var(--ease-out-quint) both;
+  animation-delay: var(--d, 0ms);
+}
+.enter-fade {
+  animation: hb-fade 1.2s ease both;
+  animation-delay: var(--d, 0ms);
+}
+.enter-unveil {
+  animation: hb-unveil 1.3s var(--ease-out-quint) both;
+  animation-delay: var(--d, 0ms);
+}
+/* The sample gift card on /subscriptions: tucked against the photo at a slight angle, straightens on hover. */
+@keyframes hb-card {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 60px, 0) rotate(7deg);
+  }
+}
+.gift-card-tucked {
+  transform: rotate(-1.75deg);
+  transition: transform 0.7s var(--ease-out-quint);
+  animation: hb-card 1.4s var(--ease-out-quint) 0.6s backwards;
+}
+.gift-card-tucked:hover {
+  transform: rotate(0deg) translate3d(0, -6px, 0);
+}
+/* The recipient's gift page: the card arrives with a tilt, the butter circle blooms, the bouquet drifts. */
+@keyframes hb-card-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 90px, 0) rotate(9deg) scale(0.94);
+  }
+}
+@keyframes hb-float {
+  50% {
+    transform: translate3d(0, -12px, 0) rotate(-2deg);
+  }
+}
+.gift-card-arrive {
+  transform: rotate(-2deg);
+  animation: hb-card-arrive 1.6s var(--ease-out-quint) 0.35s backwards;
+}
+.gift-bloom {
+  animation: hb-bloom 1.6s var(--ease-out-quint) 0.15s both;
+}
+.gift-float {
+  animation:
+    hb-fade 1.2s ease 0.9s both,
+    hb-float 7s ease-in-out 2s infinite;
+}
+.enter-unveil img {
+  animation: hb-settle 1.9s var(--ease-out-quint) both;
+  animation-delay: var(--d, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -406,8 +486,7 @@ html:has(dialog[open]) {
   line-height: 0.8;
 }
 .hero-flowers {
-  color: var(--color-olive);
-  /* Phones: the bouquet covers this space; the logo above already reads "Flowers". Kept for assistive tech. */
+  /* "Flowers" completes the h1 for assistive tech and search; visually the wordmark stands alone. */
   position: absolute;
   width: 1px;
   height: 1px;
@@ -435,34 +514,27 @@ html:has(dialog[open]) {
   background: radial-gradient(closest-side, rgba(42, 34, 29, 0.22), transparent);
   filter: blur(4px);
 }
-.hero-slide {
-  opacity: 0;
-  transform: translate3d(0, 14px, 0) scale(0.98);
-  transform-origin: 50% 100%;
-  transition:
-    opacity 0.8s var(--ease-out-quint),
-    transform 1s var(--ease-out-quint);
+/* Hero entrance: the words surface out of a soft blur, the butter circle blooms, then the bouquet arrives. */
+.hero-word {
+  display: inline-block;
+  animation: hb-word 1.3s var(--ease-out-quint) both;
+  animation-delay: var(--d, 0ms);
 }
-.hero-slide.is-active {
-  opacity: 1;
-  transform: none;
+.hero-circle-in {
+  animation: hb-bloom 1.5s var(--ease-out-quint) 0.25s both;
+}
+.hero-bouquets {
+  animation: hb-arrive 1.5s var(--ease-out-quint) 0.45s both;
+  transform-origin: 50% 100%;
+}
+.hero-shadow-in {
+  animation: hb-fade 1.4s ease 0.9s both;
 }
 .hero-copy { grid-area: copy; width: 100%; max-width: 30rem; margin-top: 3rem; }
 .hero-caption { grid-area: caption; width: 100%; max-width: 30rem; margin-top: 2rem; }
 
 @media (min-width: 640px) {
   .hero-wordmark .t-wordmark { font-size: clamp(5rem, 14.5vw, 13.25rem); line-height: 0.86; }
-  .hero-flowers {
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip-path: none;
-    top: 100%;
-    right: clamp(0.5rem, 4.5vw, 4.5rem);
-    font-size: clamp(2.5rem, 3.6vw, 3.6rem);
-    line-height: 1;
-    margin-top: 0.05em;
-  }
   .hero-stage { width: min(100%, 26rem); height: 30rem; margin-top: -3rem; }
 }
 

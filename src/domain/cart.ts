@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CARD_STYLES } from "./gift-card";
 
 /** Cart shapes shared by the client cart store and the server, which re-validates everything. */
 
@@ -14,6 +15,8 @@ export const giftDetailsSchema = z.object({
   message: trimmed(500).optional().default(""),
   startMonth: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, "Choose a starting month."),
   notifyRecipient: z.boolean().default(false),
+  /** Optional: older carts and orders predate card designs, and get the classic Letterpress card. */
+  cardStyle: z.enum(CARD_STYLES).optional(),
 });
 export type GiftDetails = z.infer<typeof giftDetailsSchema>;
 

@@ -34,7 +34,7 @@ export default function ContactPage() {
           <ul className="mt-10 space-y-5 border-t border-line pt-8 text-[0.9375rem]">
             <li>
               <span>
-                <span className="block font-display text-[1.1875rem]">Email</span>
+                <span className="block font-display font-medium text-[1.1875rem]">Email</span>
                 <a href={`mailto:${site.email}`} className="text-ink-soft underline underline-offset-4 hover:text-ink">
                   {site.email}
                 </a>
@@ -42,7 +42,7 @@ export default function ContactPage() {
             </li>
             <li>
               <span>
-                <span className="block font-display text-[1.1875rem]">
+                <span className="block font-display font-medium text-[1.1875rem]">
                   {site.location.locality}, {site.location.regionName}
                 </span>
                 <span className="text-ink-soft">

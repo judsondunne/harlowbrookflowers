@@ -7,6 +7,7 @@ import { useCartSnapshot } from "@/components/cart/cart-provider";
 import { OrderSummary } from "@/components/cart/order-summary";
 import { ButtonLink, buttonClass } from "@/components/ui/button";
 import { TextArea, TextField } from "@/components/ui/field";
+import { GiftCardEditor } from "@/components/subscriptions/gift-card-editor";
 import { checkoutAction, releaseCheckoutAction, type CheckoutFormState } from "@/app/actions/checkout";
 import { formatMoney } from "@/lib/format";
 
@@ -48,7 +49,9 @@ export function CheckoutView() {
   const remember = () => {
     const form = formRef.current;
     if (!form) return;
-    const data = Object.fromEntries(CONTACT_FIELDS.map((f) => [f, (form.elements.namedItem(f) as HTMLInputElement | null)?.value ?? ""]));
+    const data = Object.fromEntries(
+      CONTACT_FIELDS.map((f) => [f, (form.elements.namedItem(f) as HTMLInputElement | null)?.value ?? ""]),
+    );
     try {
       sessionStorage.setItem(CONTACT_KEY, JSON.stringify(data));
     } catch {
@@ -65,7 +68,7 @@ export function CheckoutView() {
   if (cart.lines.length === 0) {
     return (
       <div className="mx-auto max-w-lg py-16 text-center">
-        <p className="font-display text-4xl">Your cart is empty.</p>
+        <p className="font-display font-medium text-4xl">Your cart is empty.</p>
         <p className="mt-4 text-ink-soft">Add a bouquet or a gift subscription to check out.</p>
         <ButtonLink href="/shop" className="mt-8">
           Shop bouquets
@@ -75,6 +78,9 @@ export function CheckoutView() {
   }
 
   const needsPickupChoice = quote?.needsPickup && !quote.pickup;
+  const quoted = new Map(quote?.lines.map((l) => [l.key, l]) ?? []);
+  const giftLines = cart.lines.filter((l): l is typeof l & { gift: NonNullable<typeof l.gift> } => !!l.gift);
+  const giftsIncomplete = giftLines.some((l) => !l.gift.recipientName.trim() || !l.gift.senderName.trim());
   const blocking = quote && !quote.ok;
   const closed = snapshot && !snapshot.checkout.open;
   const v = state.values ?? {};
@@ -83,10 +89,10 @@ export function CheckoutView() {
     <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <div className="lg:col-span-7">
         {(canceled || failed) && (
-          <div role="status" className="mb-8 border-l-2 border-olive bg-butter/50 px-4 py-3 text-sm">
+          <div role="status" className="mb-8 border-l-2 border-ink/30 bg-butter/50 px-4 py-3 text-sm">
             <p>
-              <span className="font-semibold">{failed ? "Your payment didn't go through." : "Payment cancelled."}</span> Nothing
-              was charged and your cart is just as you left it.
+              <span className="font-semibold">{failed ? "Your payment didn't go through." : "Payment cancelled."}</span>{" "}
+              Nothing was charged and your cart is just as you left it.
             </p>
           </div>
         )}
@@ -94,61 +100,78 @@ export function CheckoutView() {
         <form ref={formRef} action={action} onInput={remember} noValidate className="space-y-10">
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
 
-          <fieldset className="space-y-5">
-            <legend className="t-h3 mb-2">Your details</legend>
-            <p className="-mt-1 text-sm text-muted">
-              Guest checkout. We only ask for what we need to confirm your order and reach you about pickup.
-            </p>
-            <TextField
-              id="name"
-              name="name"
-              label="Full name"
-              autoComplete="name"
-              required
-              defaultValue={v.name}
-              error={state.fieldErrors?.name}
-            />
-            <div className="grid gap-5 sm:grid-cols-2">
+          {giftLines.map((line) => {
+            const q = quoted.get(line.key);
+            return (
+              <GiftCardEditor
+                key={line.key}
+                line={line}
+                planName={q?.name ?? "Your gift"}
+                sizeLabel={q?.sizeLabel ?? ""}
+                image={q?.image?.kind === "cutout" ? q.image.src : null}
+              />
+            );
+          })}
+
+          <div className={giftLines.length ? "border-t border-line pt-8" : undefined}>
+            <fieldset className="space-y-5">
+              <legend className="t-h3 mb-2">Your details</legend>
+              <p className="-mt-1 text-sm text-muted">
+                Guest checkout. We only ask for what we need to confirm your order and reach you about pickup.
+              </p>
               <TextField
-                id="email"
-                name="email"
-                type="email"
-                label="Email"
-                autoComplete="email"
-                inputMode="email"
+                id="name"
+                name="name"
+                label="Full name"
+                autoComplete="name"
                 required
-                defaultValue={v.email}
-                error={state.fieldErrors?.email}
-                hint="For your confirmation and pickup details."
+                defaultValue={v.name}
+                error={state.fieldErrors?.name}
               />
-              <TextField
-                id="phone"
-                name="phone"
-                type="tel"
-                label="Phone"
+              <div className="grid gap-5 sm:grid-cols-2">
+                <TextField
+                  id="email"
+                  name="email"
+                  type="email"
+                  label="Email"
+                  autoComplete="email"
+                  inputMode="email"
+                  required
+                  defaultValue={v.email}
+                  error={state.fieldErrors?.email}
+                  hint="For your confirmation and pickup details."
+                />
+                <TextField
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  label="Phone"
+                  optional
+                  autoComplete="tel"
+                  defaultValue={v.phone}
+                  error={state.fieldErrors?.phone}
+                  hint="Only used if we need to reach you on pickup day."
+                />
+              </div>
+              <TextArea
+                id="note"
+                name="note"
+                label="Anything we should know?"
                 optional
-                autoComplete="tel"
-                defaultValue={v.phone}
-                error={state.fieldErrors?.phone}
-                hint="Only used if we need to reach you on pickup day."
+                rows={3}
+                maxLength={500}
+                defaultValue={v.note}
+                error={state.fieldErrors?.note}
+                placeholder="Color preferences, or the name of whoever is collecting the flowers."
               />
-            </div>
-            <TextArea
-              id="note"
-              name="note"
-              label="Anything we should know?"
-              optional
-              rows={3}
-              maxLength={500}
-              defaultValue={v.note}
-              error={state.fieldErrors?.note}
-              placeholder="Color preferences, or the name of whoever is collecting the flowers."
-            />
-          </fieldset>
+            </fieldset>
+          </div>
 
           <label className="flex cursor-pointer items-start gap-3 text-sm">
             <input type="checkbox" name="marketingOptIn" className="mt-0.5 size-4 accent-[var(--color-ink)]" />
-            <span className="text-ink-soft">Email me occasionally when new pickup days are posted. (Optional, unsubscribe any time.)</span>
+            <span className="text-ink-soft">
+              Email me occasionally when new pickup days are posted. (Optional, unsubscribe any time.)
+            </span>
           </label>
 
           <div ref={errorRef} tabIndex={-1} className="outline-none">
@@ -164,9 +187,18 @@ export function CheckoutView() {
                 )}
               </div>
             )}
+            {giftsIncomplete && (
+              <p role="alert" className="text-sm font-medium text-error">
+                Add both names to your gift card above before paying.
+              </p>
+            )}
             {needsPickupChoice && (
               <p role="alert" className="text-sm font-medium text-error">
-                Choose a pickup day in your <Link href="/cart" className="underline underline-offset-4">cart</Link> before paying.
+                Choose a pickup day in your{" "}
+                <Link href="/cart" className="underline underline-offset-4">
+                  cart
+                </Link>{" "}
+                before paying.
               </p>
             )}
             {closed && <p className="text-sm text-ink-soft">{snapshot.checkout.reason}</p>}
@@ -175,7 +207,7 @@ export function CheckoutView() {
           <div>
             <button
               type="submit"
-              disabled={pending || loading || !!blocking || !!closed || !quote}
+              disabled={pending || loading || !!blocking || !!closed || !quote || giftsIncomplete}
               className={buttonClass("primary", "lg", "h-14 w-full gap-3 disabled:opacity-45")}
             >
               {pending ? (

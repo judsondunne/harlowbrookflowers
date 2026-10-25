@@ -55,12 +55,12 @@ export function CartLines({
                     <Link
                       href={(q.kind === "subscription" ? `/subscriptions#${q.slug}` : `/shop/${q.slug}`) as Route}
                       onClick={onNavigate}
-                      className="font-display text-lg leading-tight hover:underline hover:underline-offset-4"
+                      className="font-display font-medium text-lg leading-tight hover:underline hover:underline-offset-4"
                     >
                       {q.name}
                     </Link>
                   ) : (
-                    <span className="font-display text-lg leading-tight text-muted">{missing ? "Unavailable item" : "Loading…"}</span>
+                    <span className="font-display font-medium text-lg leading-tight text-muted">{missing ? "Unavailable item" : "Loading…"}</span>
                   )}
                   {q?.sizeLabel && <p className="mt-0.5 text-[0.8125rem] text-muted">{q.sizeLabel}</p>}
                 </div>

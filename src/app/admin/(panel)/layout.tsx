@@ -28,7 +28,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
       <aside className="border-b border-line bg-paper lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:border-r lg:border-b-0">
         <div className="flex items-center justify-between gap-3 px-5 py-4 lg:block">
           <Link href="/admin" className="flex items-center gap-2">
-            <SprigMark size={24} className="text-olive" />
+            <SprigMark size={24} className="text-ink-soft" />
             <span className="font-display text-lg">Harlow Brook</span>
           </Link>
           <div className="lg:mt-3">

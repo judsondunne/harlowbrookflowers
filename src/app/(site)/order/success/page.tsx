@@ -12,6 +12,9 @@ import { ButtonLink } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/typography";
 import { buttonClass } from "@/components/ui/button";
 import { SprigMark } from "@/components/ui/icons";
+import { GiftCardFace } from "@/components/subscriptions/gift-card";
+import { GiftSharePanel } from "@/components/subscriptions/gift-share-panel";
+import { giftCardImagePath, giftPageUrl, giftPlanImages, giftSummary } from "@/server/gifts";
 import { AwaitConfirmation, ClearCart, PrintButton } from "./clear-cart";
 import { formatMoney, formatOrderNumber } from "@/lib/format";
 import { addMonths, formatDateLong, formatMonth, formatTimeRange } from "@/lib/time";
@@ -84,7 +87,7 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
   }
 
   const { order, items, window, gifts } = detail;
-  const settings = await loadSettings();
+  const [settings, planImages] = await Promise.all([loadSettings(), giftPlanImages(gifts)]);
   const paid = ["paid", "ready", "picked_up"].includes(order.status);
   const first = order.customerName.split(" ")[0];
 
@@ -92,7 +95,7 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
     return (
       <div className="mx-auto max-w-xl text-center">
         <AwaitConfirmation />
-        <SprigMark size={40} className="mx-auto text-olive" />
+        <SprigMark size={40} className="mx-auto text-ink-soft" />
         <h1 className="t-h1 mt-6">Confirming your payment…</h1>
         <p className="t-lead mt-5">This usually takes a few seconds. The page will update by itself, and your confirmation email is on its way.</p>
       </div>
@@ -134,7 +137,7 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
             <h2 id="pickup" className="t-label">
               Your pickup
             </h2>
-            <p className="mt-4 font-display text-3xl leading-tight font-light">{formatDateLong(window.date)}</p>
+            <p className="mt-4 font-display text-3xl leading-tight font-medium">{formatDateLong(window.date)}</p>
             <p className="mt-1 text-ink-soft">{formatTimeRange(window.startTime, window.endTime)}</p>
             <p className="mt-5 text-sm">
               <span>
@@ -188,26 +191,41 @@ async function OrderConfirmation({ searchParams }: { searchParams: PageProps<"/o
             </h2>
             <PrintButton />
           </div>
-          <div className="space-y-8">
-            {gifts.map((g) => (
-              <article key={g.id} className="relative overflow-hidden bg-paper p-10 text-center ring-1 ring-line sm:p-14 print:ring-0">
-                <span aria-hidden className="pointer-events-none absolute inset-3 border border-line" />
-                <p className="font-wordmark text-[1.5rem] leading-none tracking-[-0.02em]">
-                  Harlow Brook <span className="font-accent text-olive italic">Flowers</span>
-                </p>
-                <p className="mt-8 font-display text-[clamp(2rem,5vw,3.25rem)] leading-tight font-light">{g.planName}</p>
-                <p className="mt-3 text-ink-soft">
-                  {g.deliveriesTotal} Garden Bouquets, {formatMonth(g.startMonth)}
-                  {g.deliveriesTotal > 1 ? ` to ${formatMonth(addMonths(g.startMonth, g.deliveriesTotal - 1))}` : ""}
-                </p>
-                <p className="mt-10 t-accent text-[1.6rem] leading-snug">For {g.recipientName}</p>
-                {g.message && <p className="mx-auto mt-5 max-w-md font-display text-[1.125rem] leading-relaxed whitespace-pre-line">“{g.message}”</p>}
-                <p className="mt-6 t-accent text-xl">with love, {g.senderName}</p>
-                <p className="mt-10 text-xs text-muted">
-                  Collected each month in Hartland, Vermont. Sarah will be in touch with pickup dates.
-                </p>
-              </article>
-            ))}
+          <div className="space-y-12">
+            {gifts.map((g) => {
+              const { design } = giftSummary(g);
+              return (
+                <div key={g.id} className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+                  <article aria-label={`Gift card for ${g.recipientName}`} className="bg-linen p-6 sm:p-10 print:bg-transparent print:p-0">
+                    <GiftCardFace
+                      size="lg"
+                      design={design}
+                      image={planImages.get(g.productId)}
+                      planName={g.planName}
+                      detail={`${g.deliveriesTotal} Garden Bouquets · ${formatMonth(g.startMonth)}${
+                        g.deliveriesTotal > 1 ? ` to ${formatMonth(addMonths(g.startMonth, g.deliveriesTotal - 1))}` : ""
+                      }`}
+                      recipient={g.recipientName}
+                      message={g.message ? `“${g.message}”` : "A season of flowers, picked with care."}
+                      sender={g.senderName}
+                    />
+                    <p className="mt-4 text-center text-xs text-muted">
+                      Collected each month in Hartland, Vermont. Sarah will be in touch with pickup dates.
+                    </p>
+                  </article>
+                  {g.shareToken && (
+                    <div className="print:hidden">
+                      <GiftSharePanel
+                        url={giftPageUrl(g.shareToken)}
+                        previewImage={giftCardImagePath(g.shareToken)}
+                        recipientName={g.recipientName}
+                        senderName={g.senderName}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       )}

@@ -81,6 +81,24 @@ file names in `public/images/photos/`, or ask your web person. [ASSET_MANIFEST.m
   their business type, town, rough quantity and start date. Reply by email, then mark them replied or archive them.
   If a notification email is set in Settings, each inquiry is also emailed to you.
 
+## Gift cards and gift pages
+
+- Every gift subscription comes with a card in one of four designs (Letterpress, Garden, Evening, Buttercup). The
+  giver chooses the design and writes the note on the subscriptions page, and can change both at checkout.
+- After paying, the giver can (if they want) send the recipient a link to their own gift page, `/gift/…`, which shows
+  the card, the plan, the months and what happens next. It never shows the price or anyone's email address. The
+  link is in the giver's confirmation email, and in the recipient's email when the giver asked us to send one.
+- Gift pages are private: the address is unguessable and search engines are told not to index them. If a gift is
+  cancelled, its page says so.
+- Message starters and design names live in `src/domain/gift-card.ts`.
+
+## Link previews
+
+When someone shares a page in Messages, Facebook, Slack or email, the preview card comes from the
+`opengraph-image.tsx` file beside that page (bouquets show their own photo, name and price; gift links show the
+recipient's card). They use copies of the fonts and photos in `src/assets/og`; if you replace a photo on the site,
+replace its copy there too (same name, PNG for bouquet cutouts, JPEG for photos).
+
 ## Website words
 
 Most wording lives in plain files, so it can change without touching the design:

@@ -37,7 +37,7 @@ export function OrderSummary({ cart, snapshot }: { cart: Cart; snapshot: CartSna
   const pickup = snapshot?.quote.pickup;
   return (
     <div className="bg-paper p-6 ring-1 ring-line sm:p-8">
-      <h2 className="font-display text-2xl font-light">Your order</h2>
+      <h2 className="font-display text-2xl font-medium">Your order</h2>
       <CartLines cart={cart} snapshot={snapshot} dense />
       {pickup && (
         <p className="mt-2 border-t border-line pt-5 text-sm">

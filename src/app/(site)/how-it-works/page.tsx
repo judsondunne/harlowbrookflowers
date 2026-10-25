@@ -79,7 +79,7 @@ export default async function HowItWorksPage() {
               ["If plans change", "Write to us as soon as you can and we'll do our best to find another time."],
             ].map(([t, d]) => (
               <div key={t} className="grid gap-2 border-t border-line pt-5 sm:grid-cols-[9rem_1fr]">
-                <h3 className="font-display text-[1.1875rem] leading-snug">{t}</h3>
+                <h3 className="font-display font-medium text-[1.1875rem] leading-snug">{t}</h3>
                 <p className="text-[0.9375rem] leading-relaxed text-ink-soft">{d}</p>
               </div>
             ))}

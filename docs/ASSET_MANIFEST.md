@@ -43,6 +43,6 @@ Bouquet cutouts (`/images/bouquets/*`) were made by removing the background from
 | `/images/photos/zinnias-mason-jar.webp` | 1600×2400 | Subscriptions hero; How it works | Rakitha Perera | [Unsplash](https://unsplash.com/photos/hhuNFtcrCtY) | Yes |
 | `/images/photos/sarah-stewart-taylor.webp` | 1600×2000 | Homepage: Meet Sarah; About intro | Courtesy of Sarah Stewart Taylor | Supplied by the client | No |
 
-Other assets: `public/og/harlow-brook.jpg` (Open Graph image composed from the Garden Bouquet cutout), `src/app/icon.svg` (original sprig mark). Fonts (Gloock, Instrument Serif, Newsreader, Hanken Grotesk) are SIL Open Font License, served by `next/font`.
+Other assets: `public/og/harlow-brook.jpg` (Open Graph image composed from the Garden Bouquet cutout), `src/app/icon.svg` (original sprig mark). Fonts (Gloock, Newsreader, Hanken Grotesk) are SIL Open Font License, served by `next/font`. Link-preview cards use WOFF copies of the same fonts and PNG/JPEG copies of a few photos in `src/assets/og` (the card renderer can't read WebP).
 
 Sarah's portrait (`sarah-stewart-taylor.webp`) is the photo of her holding *Agony Hill* supplied with the original brief and used at the site owner's request. It was cropped to 4:5 from the 4032×3024 original. **Confirm the photographer credit before launch** and add it to the caption or the credits page if one is wanted.

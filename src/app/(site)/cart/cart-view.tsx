@@ -16,7 +16,7 @@ export function CartView() {
   if (cart.lines.length === 0) {
     return (
       <div className="mx-auto max-w-lg py-16 text-center">
-        <p className="font-display text-4xl leading-tight">Your cart is empty.</p>
+        <p className="font-display font-medium text-4xl leading-tight">Your cart is empty.</p>
         <p className="mt-4 text-ink-soft">The garden isn&apos;t. Choose a bouquet for pickup in Hartland, or give a season of flowers.</p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <ButtonLink href="/shop">Shop bouquets</ButtonLink>
@@ -63,7 +63,7 @@ export function CartView() {
 
       <aside className="lg:col-span-5">
         <div className="bg-paper p-6 ring-1 ring-line sm:p-8 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
-          <h2 className="font-display text-2xl">Summary</h2>
+          <h2 className="font-display font-medium text-2xl">Summary</h2>
           <div className="mt-5">
             <Totals snapshot={snapshot} />
           </div>

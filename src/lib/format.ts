@@ -22,3 +22,8 @@ export function cn(...classes: (string | false | null | undefined)[]) {
 export function pluralize(n: number, one: string, many = `${one}s`) {
   return `${n} ${n === 1 ? one : many}`;
 }
+
+/** Small counts in words, as in "three Garden Bouquets". */
+export function numberWord(n: number) {
+  return ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"][n] ?? String(n);
+}

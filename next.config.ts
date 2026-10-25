@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ["@libsql/client", "libsql"],
   // Disposable Vercel previews ship the build-time seeded SQLite file with every function (see db/client.ts).
-  outputFileTracingIncludes: { "/**": ["./data/harlow-brook.db"] },
+  // Link-preview cards drawn at request time (e.g. /gift/[token]/card) read their fonts and photos from disk.
+  outputFileTracingIncludes: { "/**": ["./data/harlow-brook.db", "./src/assets/og/**/*"] },
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [60, 75, 85],

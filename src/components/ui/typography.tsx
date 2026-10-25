@@ -38,9 +38,15 @@ export function PageIntro({
 }) {
   return (
     <header className={cn("container-page pt-14 pb-12 sm:pt-20 sm:pb-16", className)}>
-      {eyebrow && <Eyebrow className="mb-4">{eyebrow}</Eyebrow>}
-      <h1 className="t-h1 max-w-4xl">{title}</h1>
-      {children && <div className="t-lead mt-6 max-w-2xl">{children}</div>}
+      {eyebrow && <Eyebrow className="enter-rise mb-4">{eyebrow}</Eyebrow>}
+      <h1 className="t-h1 enter-rise max-w-4xl" style={{ "--d": "80ms" } as React.CSSProperties}>
+        {title}
+      </h1>
+      {children && (
+        <div className="t-lead enter-rise mt-6 max-w-2xl" style={{ "--d": "180ms" } as React.CSSProperties}>
+          {children}
+        </div>
+      )}
     </header>
   );
 }

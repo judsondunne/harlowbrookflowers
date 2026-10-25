@@ -15,6 +15,13 @@
       "when": 1792883700266,
       "tag": "0001_wholesale_inquiries",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792887337531,
+      "tag": "0002_gift_cards",
+      "breakpoints": true
     }
   ]
 }

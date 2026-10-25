@@ -17,7 +17,7 @@ export function NewsletterForm({ source, tone = "light" }: { source: string; ton
   if (state.status === "success") {
     return (
       <p role="status" className={cn("flex items-center gap-2 text-sm", dark ? "text-paper" : "text-ink")}>
-        <IconCheck size={18} strokeWidth={1.5} className={dark ? "text-butter" : "text-olive"} />
+        <IconCheck size={18} strokeWidth={1.5} className={dark ? "text-paper" : "text-ink"} />
         {state.message}
       </p>
     );

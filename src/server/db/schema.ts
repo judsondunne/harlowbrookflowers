@@ -139,11 +139,17 @@ export const giftSubscriptions = sqliteTable(
     senderName: text("sender_name").notNull(),
     message: text("message").notNull().default(""),
     startMonth: text("start_month").notNull(),
+    cardStyle: text("card_style").notNull().default("letterpress"),
+    /** Unguessable token for the recipient's gift page (/gift/[token]), shared by the giver if they choose. */
+    shareToken: text("share_token"),
     status: text("status", { enum: ["active", "completed", "cancelled"] }).notNull().default("active"),
     adminNotes: text("admin_notes").notNull().default(""),
     ...timestamps,
   },
-  (t) => [uniqueIndex("gift_subscriptions_item_idx").on(t.orderItemId)],
+  (t) => [
+    uniqueIndex("gift_subscriptions_item_idx").on(t.orderItemId),
+    uniqueIndex("gift_subscriptions_share_idx").on(t.shareToken),
+  ],
 );
 
 /** Every processed Stripe event id, for idempotent webhook handling. */

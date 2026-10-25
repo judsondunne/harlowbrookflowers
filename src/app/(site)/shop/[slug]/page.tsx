@@ -15,7 +15,7 @@ import { getUpcomingWindows } from "@/server/availability";
 import { loadSettings } from "@/server/settings";
 import { getFarmToday } from "@/server/today";
 import { db } from "@/server/db/client";
-import { primaryImage, productAvailability, type Product } from "@/domain/catalog";
+import { productAvailability, type Product } from "@/domain/catalog";
 import { breadcrumbJsonLd, pageMetadata, productJsonLd } from "@/lib/seo";
 import { formatPrice } from "@/lib/format";
 import { formatDateLong } from "@/lib/time";
@@ -29,12 +29,10 @@ export async function generateMetadata({ params }: PageProps<"/shop/[slug]">): P
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return { title: "Bouquet not found" };
-  const img = primaryImage(product, "photo");
   return pageMetadata({
     title: `${product.name} · ${formatPrice(product.priceCents)} Seasonal Bouquet`,
     description: `${product.summary} Locally grown in Hartland, Vermont, for pickup at the farm.`,
     path: `/shop/${product.slug}`,
-    image: img ? { url: img.src, alt: img.alt } : undefined,
   });
 }
 

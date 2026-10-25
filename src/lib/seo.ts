@@ -3,7 +3,14 @@ import type { Product } from "@/domain/catalog";
 import { productAvailability } from "@/domain/catalog";
 import { site } from "./site";
 
-/** Consistent per-page metadata with canonical URL and Open Graph. */
+/** Routes that draw their own link-preview card (an opengraph-image.tsx beside the page). */
+const SHARE_CARD_PATHS = ["/shop", "/subscriptions", "/wholesale", "/about", "/gift-flowers", "/how-it-works", "/faq", "/contact"];
+const hasOwnShareCard = (path: string) => SHARE_CARD_PATHS.includes(path) || /^\/shop\/[^/]+$/.test(path);
+
+/**
+ * Consistent per-page metadata with canonical URL and Open Graph. The share image comes from the nearest
+ * opengraph-image.tsx (each main page draws its own; the homepage card is the default).
+ */
 export function pageMetadata(input: {
   title: string;
   description: string;
@@ -24,7 +31,12 @@ export function pageMetadata(input: {
       siteName: site.name,
       type: "website",
       locale: site.locale,
-      images: [input.image ?? { url: "/og/harlow-brook.jpg", alt: site.name, width: 1200, height: 630 }],
+      // Pages with their own opengraph-image.tsx must leave `images` unset, or it would replace their card.
+      ...(input.image
+        ? { images: [input.image] }
+        : hasOwnShareCard(input.path)
+          ? {}
+          : { images: [{ url: "/opengraph-image", alt: site.name, width: 1200, height: 630 }] }),
     },
     robots: input.noindex || !site.indexable ? { index: false, follow: false } : undefined,
   };

@@ -5,8 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCart } from "@/components/cart/cart-provider";
 import { cartStore } from "@/components/cart/cart-store";
 import { Button } from "@/components/ui/button";
-import { TextArea, TextField } from "@/components/ui/field";
-import { GiftCardFace } from "./gift-card";
+import { TextField } from "@/components/ui/field";
+import { DEFAULT_CARD_STYLE, type CardStyle } from "@/domain/gift-card";
+import { CardPreview, DesignPicker, MessageField } from "./card-designer";
 import { formatPrice, cn } from "@/lib/format";
 import { addMonths, formatMonth } from "@/lib/time";
 
@@ -39,6 +40,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
   const [notifyRecipient, setNotifyRecipient] = useState(false);
   const [senderName, setSenderName] = useState("");
   const [message, setMessage] = useState("");
+  const [cardStyle, setCardStyle] = useState<CardStyle>(DEFAULT_CARD_STYLE);
   const [startMonth, setStartMonth] = useState(initial?.startMonths[0] ?? "");
   const [errors, setErrors] = useState<Errors>({});
 
@@ -71,6 +73,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
         message: message.trim(),
         startMonth: month,
         notifyRecipient: notifyRecipient && !!recipientEmail.trim(),
+        cardStyle,
       },
     });
     announce(`${plan.name} for ${recipientName.trim()} added to your cart.`);
@@ -118,7 +121,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline justify-between gap-4">
-                      <span className="font-display text-[1.375rem] leading-tight">{p.name}</span>
+                      <span className="font-display font-medium text-[1.375rem] leading-tight">{p.name}</span>
                       <span className="text-[1.0625rem] tabular-nums">{formatPrice(p.priceCents)}</span>
                     </span>
                     <span className="mt-1 block text-sm text-ink-soft">{p.tagline}</span>
@@ -171,8 +174,13 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
           </label>
         </fieldset>
 
-        <fieldset className="space-y-5">
-          <legend className="t-h3 mb-2">Your note</legend>
+        <fieldset className="space-y-6">
+          <legend className="t-h3 mb-2">Their card</legend>
+          <p className="-mt-2 text-sm text-ink-soft">
+            Choose a design and write your note. It goes on the printable card, and on their gift page if you send them the
+            link. You can change it at checkout.
+          </p>
+          <DesignPicker name={`${id}-design`} value={cardStyle} onChange={setCardStyle} />
           <TextField
             id={`${id}-senderName`}
             label="From"
@@ -183,17 +191,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
             error={errors.senderName}
             placeholder="Your name"
           />
-          <TextArea
-            id={`${id}-message`}
-            label="Message"
-            optional
-            rows={4}
-            maxLength={500}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="A summer of flowers, because you deserve them."
-            hint={`${message.length}/500`}
-          />
+          <MessageField id={`${id}-message`} value={message} onChange={setMessage} />
         </fieldset>
 
         <fieldset>
@@ -234,7 +232,9 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
       <aside className="lg:col-span-5">
         <div className="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
           <figure aria-label="Gift card preview" className="bg-linen p-6 sm:p-10">
-            <GiftCardFace
+            <CardPreview
+              design={cardStyle}
+              image={plan.image?.src}
               planName={plan.name}
               detail={`${plan.deliveries} Garden Bouquets${month ? ` · ${formatMonth(month)} to ${formatMonth(endMonth)}` : ""}`}
               recipient={recipientName.trim() || "someone lovely"}
@@ -247,7 +247,7 @@ export function GiftBuilder({ plans }: { plans: GiftPlan[] }) {
           </figure>
           <div className="mt-6 border-t border-line pt-6">
             <p className="flex items-baseline justify-between gap-4">
-              <span className="font-display text-[1.25rem]">{plan.name}</span>
+              <span className="font-display font-medium text-[1.25rem]">{plan.name}</span>
               <span className="text-[1.125rem] tabular-nums">{formatPrice(plan.priceCents)}</span>
             </p>
             <p className="mt-1 text-sm text-muted">One payment. No renewals, no account.</p>
